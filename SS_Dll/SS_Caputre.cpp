@@ -301,7 +301,7 @@ static UINT WINAPI DataListenThread(void *AParam)
 	BYTE *FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
 	unsigned short ImageCnt;
 	unsigned short PacketIndex;
-	int recv_count = 0;
+	int recv = 0;
 
 	while (!VaU3_MutexLocked(cMutexID))
 	{
