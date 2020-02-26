@@ -104,6 +104,7 @@ BYTE * SS_FrameSaver::getFrame()
 	if (frameSize != 0) 
 	{
 		vImageFrame = new BYTE[frameSize];
+		memset(vImageFrame, 0, frameSize);
 		return vImageFrame;
 	}
 	else

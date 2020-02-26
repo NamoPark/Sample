@@ -169,6 +169,15 @@ BOOL CSampleDlg::OnInitDialog()
 	}
 	theApp.m_AppDlgParam = ssGetAppParam();
 
+
+	if (!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
+	{
+		DWORD dwError = GetLastError();
+		CString strMsg;
+		strMsg.Format(_T("Failed to enter ABOVE_NORMAL_PRIORITY_CLASS mode (%d)"), dwError);
+		AfxMessageBox(strMsg);
+	}
+
 	return true;  // 포커스를 컨트롤에 설정하지 않으면 true를 반환합니다.
 }
 

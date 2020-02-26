@@ -299,9 +299,8 @@ static UINT WINAPI DataListenThread(void *AParam)
 	BYTE qBuf[UDP_MAX_PSIZE];
 	BYTE *FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
 	BYTE *FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-	unsigned short ImageCnt;
-	unsigned short PacketIndex;
-	int recv = 0;
+	unsigned short RecvImageCount = 0;
+	unsigned short RecvPacketCount= 0;
 
 	while (!VaU3_MutexLocked(cMutexID))
 	{
@@ -309,40 +308,33 @@ static UINT WINAPI DataListenThread(void *AParam)
 			qL = recv(ixTCP_Soc, (char*)qBuf, UDP_MAX_PSIZE, 0);
 			if (!(qL == SOCKET_ERROR))
 			{
-				if (qL == (NP * sizeof(unsigned short) % UDP_MAX_PSIZE)) 
+
+				unsigned short SendPacketCount = *((unsigned short*)(qBuf + 2));
+				if (RecvPacketCount != SendPacketCount)
 				{
-					if (recv_count != 290) 
+					unsigned short SendImageCount = *((unsigned short*)(qBuf));
+					if (RecvImageCount != SendImageCount) 
 					{
-						SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Error Recv Count : %d "), 290 - recv_count);
+						SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error\nRecvPacketCount : %d , SendPacketCount : %d , RecvImageCount : %d ,SendImageCount : %d "),RecvPacketCount, SendPacketCount, RecvImageCount, SendImageCount);
 						FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
-						recv_count = 0;
-						continue;
+						RecvPacketCount = 0;
+						RecvImageCount = SendImageCount;
 					}
-				}
-				if (FrameBufferCurr + qL > FrameBufferMax) 
-				{
-					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Error Overflow : %d "), 290 - recv_count);
-					FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
-					recv_count = 0;
+					FrameBufferCurr+=(UDP_MAX_PSIZE*(SendPacketCount - RecvPacketCount));
+					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error 22 \nRecvPacketCount : %d , SendPacketCount : %d , FrameBufferCurr : %x ,FrameBufferMax : %x "), RecvPacketCount, SendPacketCount, FrameBufferCurr, FrameBufferMax);
+					RecvPacketCount = SendPacketCount;
 				}
 				memcpy(FrameBufferCurr, qBuf, qL);
-
-				if (recv_count == 0)
-				{
-					unsigned short usTemp = *((unsigned short*)(FrameBufferCurr));
-					unsigned short usPacketIndex = *((unsigned short*)(FrameBufferCurr + 2));	
-					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("PacketIndex = %hd Image Cnt = %hd"), usPacketIndex, usTemp);
-
-				}
 				FrameBufferCurr += qL;
-				recv_count++;
+				RecvPacketCount++;
 			}
 			if (FrameBufferCurr == FrameBufferMax)
 			{
 				(theApp.ssFrameSave)->addFrame();
 				FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
 				FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-				recv_count = 0;
+				RecvPacketCount = 0;
+				RecvImageCount++;
 			}
 	}
 	return 0;
