@@ -214,6 +214,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SystemStatus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def" />
@@ -239,6 +240,7 @@
     <ClInclude Include="SS_socket.h" />
     <ClInclude Include="SS_sync.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemStatus.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>

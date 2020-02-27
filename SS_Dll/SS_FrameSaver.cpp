@@ -55,6 +55,22 @@ void SS_FrameSaver::saveToDisk(int pType)
 	else
 		ucTemp = pixels.back();
 
+	//System Log
+	LONG cpu;
+	sStatus.getCPUStatus(cpu, pArrayCore, cpuCount);
+	csTemp.Format(_T("CPU: %d%% \r\n"), cpu);
+	m_strOutput = csTemp;
+	for (int cnt = 0; cnt < cpuCount; cnt++) {
+		csTemp.Format(_T("core(%d): %d%% \r\n"), cnt, pArrayCore[cnt]);
+		m_strOutput += csTemp;
+	}
+	int aMem = 0;
+	int pMem = 0;
+	sStatus.getRAMStatus(aMem, pMem);
+	csTemp.Format(_T("RAM: %dMB / %dMB\r\n"), aMem, pMem);
+	m_strOutput += csTemp;
+	SS_LOG((*theApp.pSSLogger), LogLevel::Info, m_strOutput);
+
 	unsigned short usTemp = *((unsigned short*)(ucTemp));
 	unsigned short usPacketIndex = *((unsigned short*)(ucTemp+2));
 	csTemp.Format(_T("%scDark_%hd_%hd.raw"), savePath, usPacketIndex, usTemp);

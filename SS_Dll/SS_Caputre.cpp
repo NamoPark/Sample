@@ -114,10 +114,9 @@ tDLIB_CBRec* AD_Connect(int AFlags, tDLIB_CBProc ACallBackProc,
 	if (ixTCP_Soc != INVALID_SOCKET) {
 		char message[30] = "SendStart";
 		send(ixTCP_Soc, message, 30, 0);
-		ix_ThreadDataListen = (HANDLE)_beginthreadex(NULL, 0, DataListenThread,NULL, 0, &qThreadID);
-		SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
 		ix_ThreadFileSave = (HANDLE)_beginthreadex(NULL, 0, FileSaveThread, NULL, 0, &qThreadID);
-
+		ix_ThreadDataListen = (HANDLE)_beginthreadex(NULL, 0, DataListenThread, NULL, 0, &qThreadID);
+		SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
 	}
 	else 
 	{

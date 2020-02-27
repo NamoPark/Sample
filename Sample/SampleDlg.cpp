@@ -170,7 +170,7 @@ BOOL CSampleDlg::OnInitDialog()
 	theApp.m_AppDlgParam = ssGetAppParam();
 
 
-	if (!SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS))
+	if (!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
 	{
 		DWORD dwError = GetLastError();
 		CString strMsg;
