@@ -35,66 +35,66 @@ CSystemStatus::Init()
 	}
 	
 	// ³×Æ®¿öÅ© Ä«µå
-	DWORD pcchCounterListLength = 0, pcchInstanceListLength = 0 ;
-	PdhEnumObjectItems( NULL, NULL, TEXT("Network Interface"), NULL, &pcchCounterListLength, NULL, &pcchInstanceListLength, PERF_DETAIL_WIZARD, 0 );	
+	//DWORD pcchCounterListLength = 0, pcchInstanceListLength = 0 ;
+	//PdhEnumObjectItems( NULL, NULL, TEXT("Network Interface"), NULL, &pcchCounterListLength, NULL, &pcchInstanceListLength, PERF_DETAIL_WIZARD, 0 );	
 
-	LPTSTR lpCounterList = new TCHAR[pcchCounterListLength];
-	m_lpNetAdaptorList = new TCHAR[pcchInstanceListLength];
-	if ( lpCounterList && m_lpNetAdaptorList ){
-		/*HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib\langid */
-		/*
-		Bytes Total/sec
-		Packets/sec
-		Packets Received/sec
-		Packets Sent/sec
-		Current Bandwidth
-		Bytes Received/sec
-		Packets Received Unicast/sec
-		Packets Received Non-Unicast/sec
-		Packets Received Discarded
-		Packets Received Errors
-		Packets Received Unknown
-		Bytes Sent/sec
-		Packets Sent Unicast/sec
-		Packets Sent Non-Unicast/sec
-		Packets Outbound Discarded
-		Packets Outbound Errors
-		Output Queue Length
-		Offloaded Connections
-		TCP Active RSC Connections
-		TCP RSC Coalesced Packets/sec
-		TCP RSC Exceptions/sec
-		TCP RSC Average Packet Size	*/
-		
-		PdhEnumObjectItems( NULL, NULL, TEXT("Network Interface"), lpCounterList, &pcchCounterListLength, m_lpNetAdaptorList, &pcchInstanceListLength, PERF_DETAIL_WIZARD, 0 );		
+	//LPTSTR lpCounterList = new TCHAR[pcchCounterListLength];
+	//m_lpNetAdaptorList = new TCHAR[pcchInstanceListLength];
+	//if ( lpCounterList && m_lpNetAdaptorList ){
+	//	/*HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib\langid */
+	//	/*
+	//	Bytes Total/sec
+	//	Packets/sec
+	//	Packets Received/sec
+	//	Packets Sent/sec
+	//	Current Bandwidth
+	//	Bytes Received/sec
+	//	Packets Received Unicast/sec
+	//	Packets Received Non-Unicast/sec
+	//	Packets Received Discarded
+	//	Packets Received Errors
+	//	Packets Received Unknown
+	//	Bytes Sent/sec
+	//	Packets Sent Unicast/sec
+	//	Packets Sent Non-Unicast/sec
+	//	Packets Outbound Discarded
+	//	Packets Outbound Errors
+	//	Output Queue Length
+	//	Offloaded Connections
+	//	TCP Active RSC Connections
+	//	TCP RSC Coalesced Packets/sec
+	//	TCP RSC Exceptions/sec
+	//	TCP RSC Average Packet Size	*/
+	//	
+	//	PdhEnumObjectItems( NULL, NULL, TEXT("Network Interface"), lpCounterList, &pcchCounterListLength, m_lpNetAdaptorList, &pcchInstanceListLength, PERF_DETAIL_WIZARD, 0 );		
 
-		TCHAR* pList = m_lpNetAdaptorList;
-		m_NetAdaptorCount = 0;	//¾î´ðÅÍ °¹¼ö
-		while (*pList) {
-			m_NetAdaptorCount++;
-			pList += (1 + _tcslen(pList));
-		}
+	//	TCHAR* pList = m_lpNetAdaptorList;
+	//	m_NetAdaptorCount = 0;	//¾î´ðÅÍ °¹¼ö
+	//	while (*pList) {
+	//		m_NetAdaptorCount++;
+	//		pList += (1 + _tcslen(pList));
+	//	}
 
-		m_phCounterNetAdaptor = new HCOUNTER[m_NetAdaptorCount];
-		memset(m_phCounterNetAdaptor, 0, sizeof(HCOUNTER)*m_NetAdaptorCount);
-		
-		TCHAR* szInstanceName = m_lpNetAdaptorList;
-		for (size_t cnt = 0; cnt < m_NetAdaptorCount; cnt++) {
-			TCHAR szFullCounterPath[1024] = { 0 };
-			DWORD dwFullPathSize = 1024;
+	//	m_phCounterNetAdaptor = new HCOUNTER[m_NetAdaptorCount];
+	//	memset(m_phCounterNetAdaptor, 0, sizeof(HCOUNTER)*m_NetAdaptorCount);
+	//	
+	//	TCHAR* szInstanceName = m_lpNetAdaptorList;
+	//	for (size_t cnt = 0; cnt < m_NetAdaptorCount; cnt++) {
+	//		TCHAR szFullCounterPath[1024] = { 0 };
+	//		DWORD dwFullPathSize = 1024;
 
-			PDH_COUNTER_PATH_ELEMENTS pcpe = { 0 };
-			pcpe.szObjectName = TEXT("Network Interface");
-			pcpe.szInstanceName = szInstanceName;
-			pcpe.dwInstanceIndex = -1;
-			pcpe.szCounterName = TEXT("Bytes Total/sec");
-			PdhMakeCounterPath(&pcpe, szFullCounterPath, &dwFullPathSize, 0);
-			PdhAddCounter(m_hQuery, szFullCounterPath, 1, &m_phCounterNetAdaptor[cnt]);
+	//		PDH_COUNTER_PATH_ELEMENTS pcpe = { 0 };
+	//		pcpe.szObjectName = TEXT("Network Interface");
+	//		pcpe.szInstanceName = szInstanceName;
+	//		pcpe.dwInstanceIndex = -1;
+	//		pcpe.szCounterName = TEXT("Bytes Total/sec");
+	//		PdhMakeCounterPath(&pcpe, szFullCounterPath, &dwFullPathSize, 0);
+	//		PdhAddCounter(m_hQuery, szFullCounterPath, 1, &m_phCounterNetAdaptor[cnt]);
 
-			szInstanceName += (1 + _tcslen(szInstanceName));
-		}
-		delete lpCounterList;
-	} 
+	//		szInstanceName += (1 + _tcslen(szInstanceName));
+	//	}
+	//	delete lpCounterList;
+	//} 
 }
 
 void
@@ -149,9 +149,10 @@ CSystemStatus::Terminate(){
 		PdhRemoveCounter(m_phCounterCPUCore[cnt]);
 	delete(m_phCounterCPUCore);
 
-	for (int cnt = 0; cnt < m_NetAdaptorCount; cnt++)
-		PdhRemoveCounter(m_phCounterNetAdaptor[cnt]);
-	delete[] m_phCounterNetAdaptor;
+	//for (int cnt = 0; cnt < m_NetAdaptorCount; cnt++)
+	//	PdhRemoveCounter(m_phCounterNetAdaptor[cnt]);
+	//if(m_phCounterNetAdaptor!=NULL)
+	//delete[] m_phCounterNetAdaptor;
 
-	delete[] m_lpNetAdaptorList;
+	//delete[] m_lpNetAdaptorList;
 }

@@ -116,7 +116,7 @@ tDLIB_CBRec* AD_Connect(int AFlags, tDLIB_CBProc ACallBackProc,
 		send(ixTCP_Soc, message, 30, 0);
 		ix_ThreadFileSave = (HANDLE)_beginthreadex(NULL, 0, FileSaveThread, NULL, 0, &qThreadID);
 		ix_ThreadDataListen = (HANDLE)_beginthreadex(NULL, 0, DataListenThread, NULL, 0, &qThreadID);
-		SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
+		//SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
 	}
 	else 
 	{
