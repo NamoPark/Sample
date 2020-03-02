@@ -1,7 +1,7 @@
 #include "SS_FrameSaver.h"
-#include "SS_file_utils.h"
-#include "Log/Logger.h"
-#include "SS_Dll.h"
+#include "SS_FileUtils.h"
+#include "../SS_Logger/Logger.h"
+#include "../SS_Dll.h"
 
 
 SS_FrameSaver::SS_FrameSaver() //: mtVector(_T("FrameSaveVector"))
@@ -25,8 +25,6 @@ SS_FrameSaver::~SS_FrameSaver()
 	pixels.clear();
 	delete[] vImageFrame;
 
-	sStatus.Terminate();
-	delete[] pArrayCore;
 }
 
 void SS_FrameSaver::setup(int height, int width, int pixelSize, CString csPath)
@@ -37,11 +35,6 @@ void SS_FrameSaver::setup(int height, int width, int pixelSize, CString csPath)
 	imageH			=	height;
 	imageW			=	width;
 	frameSize		=	imageH * imageW * pixelSize;
-
-	//System Log
-	sStatus.Init();
-	cpuCount = sStatus.getCPUCount();
-	pArrayCore = new LONG[cpuCount];
 }
 
 void SS_FrameSaver::addFrame()
@@ -64,23 +57,6 @@ void SS_FrameSaver::saveToDisk(int pType)
 		ucTemp = pixels.back();
 
 	//System Log
-	sStatus.Update();
-	LONG cpu;
-	sStatus.getCPUStatus(cpu, pArrayCore, cpuCount);
-
-	csTemp.Format(_T("CPU : %ld\n"), cpu);
-	m_strOutput = csTemp;
-	for (int cnt = 0; cnt < cpuCount; cnt++) {
-		csTemp.Format(_T("core(%d): %ld\n"), cnt, pArrayCore[cnt]);
-		m_strOutput += csTemp;
-	}
-	int aMem = 0;
-	int pMem = 0;
-	sStatus.getRAMStatus(aMem, pMem);
-	csTemp.Format(_T("RAM: %dMB / %dMB\n"), aMem, pMem);
-	m_strOutput += csTemp;
-	SS_LOG((*theApp.pSSLogger), LogLevel::Info, m_strOutput);
-
 	unsigned short usTemp = *((unsigned short*)(ucTemp));
 	unsigned short usPacketIndex = *((unsigned short*)(ucTemp+2));
 	csTemp.Format(_T("%scDark_%hd_%hd.raw"), savePath, usPacketIndex, usTemp);
@@ -101,7 +77,6 @@ void SS_FrameSaver::pop(int pType)
 	CSmartCriticalSection smtVectorPop(vtFrameMutex);
 	if (pType == FRONT)
 	{
-		//SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("pixels.front() : %x "), pixels.front());
 		delete[] pixels[0];
 		pixels.erase(pixels.begin());
 	}

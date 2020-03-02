@@ -4,8 +4,8 @@
 #include "SS_Interface.h"
 #include "SS_Dll.h"
 #include "Misc.h"
-#include "Common/Cmd_List.h"
-#include "Log/Logger.h"
+#include "SS_CommonFW/Cmd_List.h"
+#include "SS_Logger/Logger.h"
 
 
 #define UDP_MAX_PSIZE 65000

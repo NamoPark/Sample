@@ -2,10 +2,10 @@
 //
 
 #pragma once
-#include "Log/Logger.h"
+#include "SS_Logger/Logger.h"
 #include "SS_Param.h"
 #include "GIniFile.h"
-#include "SS_FrameSaver.h"
+#include "SS_CommonUtils/SS_FrameSaver.h"
 #ifndef __AFXWIN_H__
 	#error "PCH에 대해 이 파일을 포함하기 전에 'stdafx.h'를 포함합니다."
 #endif

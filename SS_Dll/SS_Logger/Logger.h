@@ -5,8 +5,8 @@
 #include <time.h>
 #include <fstream>
 #include "threading.h"
-#include "../SS_defines.h"
-#include "../SS_file_utils.h"
+#include "../SS_CommonUtils/SS_StringDefines.h"
+#include "../SS_CommonUtils/SS_FileUtils.h"
 
 #define LOG_DIR_NAME _T("SS_Logger\\")
 

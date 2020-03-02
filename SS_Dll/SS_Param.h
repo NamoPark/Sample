@@ -1,5 +1,5 @@
 #pragma once
-#include "SS_defines.h"
+#include "SS_CommonUtils/SS_StringDefines.h"
 #include "GIniFile.h"
 #include "SS_Interface.h"
 

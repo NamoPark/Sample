@@ -11,7 +11,7 @@
 */
 
 /*!
-* @file      sd_defines.h
+* @file      sd_StringDefines.h
 * @brief     common definitions
 * @author    js.view.kim@samsung.com
 * @date      2015.07.16 (heading comment adding)

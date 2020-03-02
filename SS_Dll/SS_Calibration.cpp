@@ -5,7 +5,7 @@
 #include "SS_Interface.h"
 #include "SS_Caputre.h"
 #include "SS_Param.h"
-#include "Common/Cmd_List.h"
+#include "SS_CommonFW/Cmd_List.h"
 #include "Misc.h"
 
 static int g_nDarkCount = 0;

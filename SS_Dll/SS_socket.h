@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SS_Interface.h"
-#include "SS_defines.h"
+#include "SS_CommonUtils/SS_StringDefines.h"
 
 #include <string>
 using namespace std;

@@ -1,7 +1,7 @@
 #pragma once
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "SS_sync.h"
-#include "SystemStatus.h"
+#include "SS_SystemStatus.h"
 #include <vector>
 using namespace std;
 #define FRONT 0
@@ -41,12 +41,8 @@ private	:
 	//vector<unsigned char*>		Err_pixels;
 	CCriticalSection			vtFrameMutex;
 	CCriticalSection			vtErrFrameMutex;
-	CSystemStatus sStatus;
 
 
-	CString m_strOutput;
-	size_t	cpuCount = 0;
-	LONG	*pArrayCore = nullptr;
 
 	//size_t	netAdaptorCount = 0;
 	//LONG	*pArrayNetValue = nullptr;

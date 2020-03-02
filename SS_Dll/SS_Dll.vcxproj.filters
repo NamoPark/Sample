@@ -19,6 +19,12 @@
     <Filter Include="Common">
       <UniqueIdentifier>{2d0cdd74-5778-45f3-88f9-d333d548e32c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CommonFW">
+      <UniqueIdentifier>{42821917-5376-4048-a3bd-c8107b87ba72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CommonUtils">
+      <UniqueIdentifier>{ec2fc062-a870-4a96-9c15-5b3161f1d3cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SS_Dll.cpp">
@@ -51,20 +57,20 @@
     <ClCompile Include="Misc.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="SS_file_utils.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="SS_CommonUtils\SS_FrameSaver.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
-    <ClCompile Include="SS_FrameSaver.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="SS_CommonUtils\SS_SystemStatus.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
-    <ClCompile Include="SS_sync.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="SS_CommonUtils\SS_Timer.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
-    <ClCompile Include="SystemStatus.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="SS_CommonUtils\SS_FileUtils.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
-    <ClCompile Include="SS_Timer.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="SS_CommonUtils\SS_Sync.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,17 +97,8 @@
     <ClInclude Include="SS_Interface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SS_defines.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="SS_socket.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Log\Logger.h">
-      <Filter>Logger</Filter>
-    </ClInclude>
-    <ClInclude Include="Log\threading.h">
-      <Filter>Logger</Filter>
     </ClInclude>
     <ClInclude Include="SS_Param.h">
       <Filter>헤더 파일</Filter>
@@ -115,32 +112,41 @@
     <ClInclude Include="Misc.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ParameterStruct.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Ginifile.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Cmd_List.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="GIniFile_Template.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="SS_file_utils.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Common\Cmd_List.h">
+      <Filter>CommonFW</Filter>
     </ClInclude>
-    <ClInclude Include="SS_FrameSaver.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Common\ParameterStruct.h">
+      <Filter>CommonFW</Filter>
     </ClInclude>
-    <ClInclude Include="SS_sync.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="SS_CommonUtils\SS_FileUtils.h">
+      <Filter>CommonUtils</Filter>
     </ClInclude>
-    <ClInclude Include="SystemStatus.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="SS_CommonUtils\SS_FrameSaver.h">
+      <Filter>CommonUtils</Filter>
     </ClInclude>
-    <ClInclude Include="SS_Timer.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="SS_CommonUtils\SS_SystemStatus.h">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\SS_Timer.h">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\SS_StringDefines.h">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\SS_Sync.h">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_Logger\Logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_Logger\threading.h">
+      <Filter>Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

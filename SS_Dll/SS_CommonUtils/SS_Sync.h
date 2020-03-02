@@ -1,7 +1,7 @@
 #pragma once
 
-#include "stdafx.h"
-#include "SS_defines.h"
+#include "../stdafx.h"
+#include "SS_StringDefines.h"
 
 class CCriticalSection
 {

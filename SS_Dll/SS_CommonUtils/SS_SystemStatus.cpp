@@ -1,5 +1,5 @@
 
-#include "SystemStatus.h"
+#include "SS_SystemStatus.h"
 #include <string>
 #include <tchar.h>
  
@@ -13,8 +13,7 @@ CSystemStatus::~CSystemStatus(void)
 {
 }
 
-void
-CSystemStatus::Init()
+void CSystemStatus::Init()
 {
 	PdhOpenQuery(NULL, 0, &m_hQuery);
 
@@ -33,6 +32,20 @@ CSystemStatus::Init()
 			PdhAddCounter(m_hQuery, szFullCounterPath, 1, &m_phCounterCPUCore[cnt]);
 		}
 	}
+}
+
+void CSystemStatus::Update() {
+	// 카운트 갱신
+	PdhCollectQueryData(m_hQuery);
+}
+
+void CSystemStatus::Terminate() {
+
+	PdhRemoveCounter(m_hCounterCPUTotal);
+
+	for (int cnt = 0; cnt < m_CPUCoreCount; cnt++)
+		PdhRemoveCounter(m_phCounterCPUCore[cnt]);
+	delete(m_phCounterCPUCore);
 }
 
 void CSystemStatus::getCPUStatus(LONG &total, LONG* arrCore, size_t arrCoreSize) {
@@ -59,26 +72,3 @@ void CSystemStatus::getRAMStatus(int &availableMem, int &physicalMem) {
 	physicalMem =  (int)((MemoryStatus.ullTotalPhys)/(1024*1024));
 }
 
-void CSystemStatus::getNETStatus(LONG *adapTotalByte, size_t adaptorCount) {
-	////네트워크
-	PDH_FMT_COUNTERVALUE PFC_Value = { 0 };
-
-	for (int cnt = 0; cnt < adaptorCount; cnt++) {
-		PdhGetFormattedCounterValue(m_phCounterNetAdaptor[cnt], PDH_FMT_LONG, NULL, &PFC_Value);
-		adapTotalByte[cnt] = PFC_Value.longValue;
-	}
-}
-
-void CSystemStatus::Update(){
-	// 카운트 갱신
-	PdhCollectQueryData( m_hQuery );
-}
-
-void CSystemStatus::Terminate(){
-
-	PdhRemoveCounter(m_hCounterCPUTotal);
-	
-	for (int cnt = 0; cnt < m_CPUCoreCount; cnt++)
-		PdhRemoveCounter(m_phCounterCPUCore[cnt]);
-	delete(m_phCounterCPUCore);
-}

@@ -1,7 +1,7 @@
 
 #include "SS_sync.h"
-#include "SS_Dll.h"
-#include "Log/Logger.h"
+#include "../SS_Dll.h"
+#include "../SS_Logger/Logger.h"
 
 CCriticalSection::CCriticalSection(SSstring name)
 	: m_sName(name)

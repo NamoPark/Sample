@@ -27,9 +27,4 @@ public:
 	size_t	getCPUCount() {	return m_CPUCoreCount;}
 	void	getCPUStatus(LONG &total, LONG* arrCore, size_t arrCoreSize );
 	void	getRAMStatus(int &availableMem, int &physicalMem); //¥‹¿ß:MB
-
-	size_t			getNetAdaptorCount() { return m_NetAdaptorCount; }
-	const LPTSTR	getNetAdatorList() { return m_lpNetAdaptorList;}
-	void			getNETStatus(LONG *adapTotalByte, size_t adaptorCount);  
-
  };

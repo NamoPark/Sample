@@ -1,9 +1,7 @@
 
-#include "stdafx.h"
-#include "SS_file_utils.h"
+#include "../stdafx.h"
+#include "SS_FileUtils.h"
 #include <strsafe.h>
-
-TCHAR g_pSDK_Directory[MAX_PATH] = _T("");
 
 const bool FileExists(const SSstring sFilename)
 {
@@ -29,7 +27,6 @@ const bool FileDelete(const SSstring sFilename)
 	return DeleteFile(sFilename.c_str()) != false;
 }
 
-
 const bool MakeDirectory(const SSstring sDir)
 {
 	CString csPath;
@@ -39,15 +36,35 @@ const bool MakeDirectory(const SSstring sDir)
 	while ((nEnd = csPath.Find(_T("\\"), nStart)) >= 0)
 	{
 		CString csToken = csPath.Mid(nStart, nEnd - nStart);
-		CreateDirectory(csPrefix + csToken, NULL);
-
+		int bResult = 0;
+		if (!FileExists((LPCTSTR)(csPrefix + csToken))) 
+		{
+			bResult = CreateDirectory(csPrefix + csToken, NULL);
+			if (!bResult) 
+			{
+				LPVOID lpMsgBuf;
+				DWORD dwError = GetLastError();
+				FormatMessage(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
+					FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL,
+					dwError,
+					MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
+					(LPTSTR)&lpMsgBuf,
+					0, NULL);
+				CString tTemp = (LPCTSTR)lpMsgBuf;
+				LocalFree(lpMsgBuf);
+				return false;
+			}
+		}
 		csPrefix += csToken;
 		csPrefix += _T("\\");
 		nStart = nEnd + 1;
 	}
 	csToken = csPath.Mid(nStart);
 	CreateDirectory(csPrefix + csToken, NULL);
-	return false;
+	return true;
 }
 
 const bool MakeFile(const SSstring sFilePath)
@@ -86,31 +103,6 @@ const SSstring ExtractFilePath(const SSstring sPath)
 	return sPath.substr(0, idx + 1); // including /
 }
 
-const SSstring EnsurePathDelimiter(const SSstring sPath, const TSDPathDelimiter pdDelim)
-{
-	SSstring sPathInput = sPath;
-	const SSstring::size_type len = sPath.length();
-
-	if (len > 0)
-	{
-		if (sPath[len - 1] != '\\' && sPath[len - 1] != '/')
-		{
-			switch (pdDelim)
-			{
-			case TSDPathDelimiter::pdWin32:
-				sPathInput.push_back('\\');
-				return sPathInput;
-			case TSDPathDelimiter::pdUNIX:
-				sPathInput.push_back('/');
-				return sPathInput;
-			}
-		}
-
-		return sPathInput;
-	}
-
-	return sPath;
-}
 
 const SSstring ExtractPureFileName(const SSstring sPath)
 {
@@ -131,16 +123,10 @@ const SSstring GetModuleDirectory()
 	SSstring sModuleDir(pModulePath);
 
 	sModuleDir = ExtractFilePath(sModuleDir);
-	sModuleDir = EnsurePathDelimiter(sModuleDir);
+	//sModuleDir = EnsurePathDelimiter(sModuleDir);
 
 	return sModuleDir;
 }
-
-const SSstring GetSDKDirectory()
-{
-	return SSstring(g_pSDK_Directory);
-}
-
 
 void SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
 {
