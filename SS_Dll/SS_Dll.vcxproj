@@ -197,6 +197,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GIniFile.cpp" />
+    <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="SS_Calibration.cpp" />
     <ClCompile Include="SS_Caputre.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Common\ParameterStruct.h" />
     <ClInclude Include="Ginifile.h" />
     <ClInclude Include="GIniFile_Template.hpp" />
+    <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Log\Logger.h" />
     <ClInclude Include="Log\threading.h" />
     <ClInclude Include="Misc.h" />
