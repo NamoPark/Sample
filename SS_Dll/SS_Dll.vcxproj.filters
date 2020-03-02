@@ -63,7 +63,7 @@
     <ClCompile Include="SystemStatus.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="HighResolutionTimer.cpp">
+    <ClCompile Include="SS_Timer.cpp">
       <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -139,7 +139,7 @@
     <ClInclude Include="SystemStatus.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="HighResolutionTimer.h">
+    <ClInclude Include="SS_Timer.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

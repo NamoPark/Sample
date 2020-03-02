@@ -197,7 +197,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GIniFile.cpp" />
-    <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="SS_Calibration.cpp" />
     <ClCompile Include="SS_Caputre.cpp" />
@@ -209,6 +208,7 @@
     <ClCompile Include="SS_Param.cpp" />
     <ClCompile Include="SS_socket.cpp" />
     <ClCompile Include="SS_sync.cpp" />
+    <ClCompile Include="SS_Timer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -226,7 +226,6 @@
     <ClInclude Include="Common\ParameterStruct.h" />
     <ClInclude Include="Ginifile.h" />
     <ClInclude Include="GIniFile_Template.hpp" />
-    <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Log\Logger.h" />
     <ClInclude Include="Log\threading.h" />
     <ClInclude Include="Misc.h" />
@@ -241,6 +240,7 @@
     <ClInclude Include="SS_Param.h" />
     <ClInclude Include="SS_socket.h" />
     <ClInclude Include="SS_sync.h" />
+    <ClInclude Include="SS_Timer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemStatus.h" />
     <ClInclude Include="targetver.h" />
