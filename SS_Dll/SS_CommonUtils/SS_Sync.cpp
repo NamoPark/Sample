@@ -3,7 +3,7 @@
 #include "../SS_Dll.h"
 #include "../SS_Logger/Logger.h"
 
-CCriticalSection::CCriticalSection(SSstring name)
+CCriticalSection::CCriticalSection(SWstring name)
 	: m_sName(name)
 {
 	SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("%s, CS is initialized."), m_sName.c_str());

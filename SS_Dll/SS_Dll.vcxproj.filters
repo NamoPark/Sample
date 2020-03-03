@@ -25,6 +25,9 @@
     <Filter Include="CommonUtils">
       <UniqueIdentifier>{ec2fc062-a870-4a96-9c15-5b3161f1d3cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Acquisition">
+      <UniqueIdentifier>{c24e70c4-ef1b-4445-91d9-d8779ec08c9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SS_Dll.cpp">

@@ -84,18 +84,24 @@ namespace framework
 			};
 
 		public:
-			CLogger(framework::Diagnostics::LogLevel level,SSstring ModelName,
+			CLogger(framework::Diagnostics::LogLevel level,SWstring ModelName,
 				int loggableItems = static_cast<int>(LogItem::Function) | static_cast<int>(LogItem::LineNumber) | static_cast<int>(LogItem::DateTime) | 
 				static_cast<int>(LogItem::LoggerName) | static_cast<int>(LogItem::LogLevel)) 
 				: m_level(level), ws_Model_Name(ModelName),m_loggableItem(loggableItems)
 			{		
-				SSstring ws_Dir_Path = GetModuleDirectory();
+				
+				SWstring ws_Dir_Path = GetModuleDirectory();
 				ws_Dir_Path = ws_Dir_Path + LOG_DIR_NAME;
-				if (DirectoryExists(ws_Dir_Path)== INVALID_PATH)
+				if (!DirectoryExists(ws_Dir_Path))
 				{
-					MakeDirectory(ws_Dir_Path);
+					bLogInit = MakeAllDirectory(ws_Dir_Path);
+					if (!bLogInit) 
+					{
+						TRACE(_T("\nCreate Log Directory Error \n"));
+					}
 				}
 				ws_File_Path = ws_Dir_Path + ws_Model_Name+_T(".log");
+
 				//Add OutStream 
 				AddOutputStream(new std::wofstream(ws_File_Path, 8), true, framework::Diagnostics::LogLevel::Info);
 			}
@@ -125,6 +131,7 @@ namespace framework
 				StreamInfo si(os, own, level);
 				m_outputStreams.push_back(si);
 			}
+
 			void ClearOutputStreams()
 			{
 				for(vector<StreamInfo>::iterator iter = m_outputStreams.begin(); iter < m_outputStreams.end(); iter++)
@@ -152,7 +159,7 @@ namespace framework
 					}
 
 					bool written = false;
-					SSostream * pStream = iter->pStream;
+					SWostream * pStream = iter->pStream;
 				
 					if(m_loggableItem & static_cast<int>(LogItem::DateTime))
 						written = write_datetime(written, pStream);
@@ -191,7 +198,7 @@ namespace framework
 				m_threadProtect.Unlock();
 			}
 
-			void Log(LogLevel level, LPCTSTR file, INT line, LPCTSTR func, SSstring fmt, ...)
+			void Log(LogLevel level, LPCTSTR file, INT line, LPCTSTR func, SWstring fmt, ...)
 			{
 				CString csTemp = fmt.c_str();
 				while (!m_threadProtect.Lock());
@@ -209,7 +216,7 @@ namespace framework
 					}
 
 					bool written = false;
-					SSostream * pStream = iter->pStream;
+					SWostream * pStream = iter->pStream;
 
 					if (m_loggableItem & static_cast<int>(LogItem::DateTime))
 						written = write_datetime(written, pStream);
@@ -248,13 +255,15 @@ namespace framework
 				m_threadProtect.Unlock();
 			}
 
+			bool GetLogStatus() {return bLogInit};
 		private:			
 			int m_loggableItem;
 			LogLevel m_level;
-			SSstring ws_Model_Name;
-			SSstring ws_File_Path;
+			SWstring ws_Model_Name;
+			SWstring ws_File_Path;
 			vector<StreamInfo> m_outputStreams;
 			ThreadingProtection m_threadProtect;
+			bool bLogInit;
 	
 			template <class T> inline bool write(T data, bool written, wostream* strm)
 			{

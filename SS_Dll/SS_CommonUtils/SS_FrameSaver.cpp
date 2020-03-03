@@ -61,7 +61,9 @@ void SS_FrameSaver::saveToDisk(int pType)
 	unsigned short usPacketIndex = *((unsigned short*)(ucTemp+2));
 	csTemp.Format(_T("%scDark_%hd_%hd.raw"), savePath, usPacketIndex, usTemp);
 	SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Size = %d , PacketIndex = %hd Image Cnt = %hd"), pixels.size(), usPacketIndex, usTemp);
-	SaveRawFrame(csTemp,0, ucTemp, frameSize);
+
+	//SaveRawFrame(csTemp,0, ucTemp, frameSize);
+	SaveToFile((unsigned char*)usTemp, frameSize, CTOW(csTemp));
 }
 
 

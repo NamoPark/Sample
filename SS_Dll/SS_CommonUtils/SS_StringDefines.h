@@ -22,20 +22,31 @@
 #include <iostream>
 
 using namespace std;
-
+//nh : wstring to CString
+#define WTOC(X) X.c_str()
+//nh : wstring to string
+#define WTOS(X) CT2CA(X.c_str())
+//nh : CString to wstring
+#define CTOW(X) X.operator LPCWSTR()
+//nh : CString to string
+#define CTOS(X) CT2CA(X.operator LPCWSTR())
+//nh : string to CString
+#define STOC(X) CA2CT(X.c_str())
+//nh : string to wstring
+#define STOW(X) CA2CT(X.c_str())
 
 #ifdef UNICODE
-#define SSstring			wstring
+#define SWstring			wstring
 #define SS_cout				wcout
 #define sout				wstringstream
 #define SSifstream			wifstream
 #define SSistream			wistream
-#define SSstringstream		wstringstream
+#define SWstringstream		wstringstream
 #define SSostringstream		wostringstream
-#define SSostream			wostream
-#define SSstringstream		wstringstream
+#define SWostream			wostream
+#define SWstringstream		wstringstream
 #else 
-#define SSstring			string
+#define SWstring			string
 #define SS_cout				cout
 #define SSut				stringstream
 #define SS_ifstream			ifstream

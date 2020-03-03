@@ -10,10 +10,10 @@ typedef struct		_tCalPar tCalPar;
 class SS_App_Param
 {
 private:
-	SSstring		wsCalDirPath;
-	SSstring		wsImgDirPath;
-	SSstring		wsDetIniDirPath;
-	SSstring		wsAppIniFilePath;
+	SWstring		wsCalDirPath;
+	SWstring		wsImgDirPath;
+	SWstring		wsDetIniDirPath;
+	SWstring		wsAppIniFilePath;
 	TCHAR			IPAddr[WCHAR_MAX_LENGTH] = { 0, };
 	TCHAR			m_iSingleFilePath[WCHAR_MAX_LENGTH] = { 0, };
 	TCHAR			m_iMultiFilePath[WCHAR_MAX_LENGTH] = { 0, };
@@ -27,18 +27,18 @@ private:
 	GIniFile		gAppIni;
 	tDlgParam		*m_ptDlgParam;
 public:
-	void			SetCalDirPath		(SSstring CalPath);
-	void			SetImgDirPath		(SSstring ImgPath);
-	void			SetDetIniDirPath	(SSstring IniPath);
-	void			SetAppIniFilePath	(SSstring IniPath);
+	void			SetCalDirPath		(SWstring CalPath);
+	void			SetImgDirPath		(SWstring ImgPath);
+	void			SetDetIniDirPath	(SWstring IniPath);
+	void			SetAppIniFilePath	(SWstring IniPath);
 	void			SetDetCount			(int DetCount);
 	void			SetDetLastSelected	(int DetIndex);
 	void			SetDetModel			(int DetModel);
 	void			SetAppiniParam		(tDlgParam* DlgParam);
-	SSstring		GetCalPath			();
-	SSstring		GetImgPath			();
-	SSstring		GetAppIniPath		();
-	SSstring		GetDetIniPath		();
+	SWstring		GetCalPath			();
+	SWstring		GetImgPath			();
+	SWstring		GetAppIniPath		();
+	SWstring		GetDetIniPath		();
 	int				GetDetCount			();
 	int				GetDetLastSelected	();
 	int				GetDetModel			();
@@ -49,8 +49,8 @@ public:
 	~SS_App_Param();
 
 	//Initialize sequence ฐüทร
-	void			CheckIniFile		(SSstring wsBasePath);
-	void			SetDefaultPath		(SSstring wsBasePath);
+	void			CheckIniFile		(SWstring wsBasePath);
+	void			SetDefaultPath		(SWstring wsBasePath);
 	int				CountDetector		(CString wsBasePath);
 	void			CreateDefaultInfo	(CString wsBasePath);
 	int				LoadAppIniParam		(CString wsBasePath, tDlgParam* pDlgParam);

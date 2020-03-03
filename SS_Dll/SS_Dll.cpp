@@ -58,7 +58,7 @@ BOOL CSS_DllApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
-	SSstring TestModelName(L"OD1012");
+	SWstring TestModelName(L"OD1012");
 	pSSLogger = new CLogger<CIntraProcessLock>(LogLevel::Info, TestModelName);
 	SS_LOG((*pSSLogger), LogLevel::Info, _T("ProgramStart"));
 

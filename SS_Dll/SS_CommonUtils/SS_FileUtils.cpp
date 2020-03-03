@@ -2,8 +2,46 @@
 #include "../stdafx.h"
 #include "SS_FileUtils.h"
 #include <strsafe.h>
+#include "SS_Timer.h"
 
-const bool FileExists(const SSstring sFilename)
+static SWstring ReportError(LPTSTR lpszFunction)
+{
+	// Retrieve the system error message for the last-error code
+	DWORD dw = GetLastError();
+
+	LPVOID lpMsgBuf;
+	LPVOID lpDisplayBuf;
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dw,
+		MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf,
+		0, NULL);
+
+	// Display the error message and exit the process
+
+	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
+		(lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
+	StringCchPrintf(
+		(LPTSTR)lpDisplayBuf, LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+		TEXT("%s failed with error %d: %s"), lpszFunction, dw, lpMsgBuf);
+
+	SWstring sMessage = _T("");
+	sMessage = (LPTSTR)lpDisplayBuf;
+
+	LocalFree(lpMsgBuf);
+	LocalFree(lpDisplayBuf);
+
+	return sMessage;
+}
+
+
+
+const bool FileExists(const SWstring sFilename)
 {
 	DWORD dwAttrib = GetFileAttributes(sFilename.c_str());
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)));
@@ -16,111 +54,114 @@ const bool FileExistsA(const string sFilename)
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)));
 }
 
-const bool DirectoryExists(const SSstring sDir)
+const bool DirectoryExists(const SWstring sDir)
 {
 	DWORD dwAttrib = GetFileAttributes(sDir.c_str());
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-const bool FileDelete(const SSstring sFilename)
+const bool FileDelete(const SWstring sFilename)
 {
 	return DeleteFile(sFilename.c_str()) != false;
 }
 
-const bool MakeDirectory(const SSstring sDir)
+const bool MakeAllDirectory(const SWstring sFilename)
 {
 	CString csPath;
-	csPath = sDir.c_str();
+	csPath = WTOC(sFilename);
 	CString csPrefix(_T("")), csToken(_T(""));
 	int nStart = 0, nEnd;
+
+	bool bResult = 1;
 	while ((nEnd = csPath.Find(_T("\\"), nStart)) >= 0)
 	{
 		CString csToken = csPath.Mid(nStart, nEnd - nStart);
-		int bResult = 0;
-		if (!FileExists((LPCTSTR)(csPrefix + csToken))) 
-		{
-			bResult = CreateDirectory(csPrefix + csToken, NULL);
-			if (!bResult) 
-			{
-				LPVOID lpMsgBuf;
-				DWORD dwError = GetLastError();
-				FormatMessage(
-					FORMAT_MESSAGE_ALLOCATE_BUFFER |
-					FORMAT_MESSAGE_FROM_SYSTEM |
-					FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL,
-					dwError,
-					MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-					(LPTSTR)&lpMsgBuf,
-					0, NULL);
-				CString tTemp = (LPCTSTR)lpMsgBuf;
-				LocalFree(lpMsgBuf);
-				return false;
-			}
-		}
+		bResult = MakeDirectory((LPCTSTR)(csPrefix + csToken));
+		if (!bResult)
+			return bResult;
 		csPrefix += csToken;
 		csPrefix += _T("\\");
 		nStart = nEnd + 1;
 	}
 	csToken = csPath.Mid(nStart);
-	CreateDirectory(csPrefix + csToken, NULL);
-	return true;
+
+	bResult = MakeDirectory((LPCTSTR)(csPrefix + csToken));
+	if (!bResult)
+		return bResult;
+
+	return bResult;
 }
 
-const bool MakeFile(const SSstring sFilePath)
+const bool MakeDirectory(const SWstring sDir)
 {
-	CFileStatus fstat;
-	CFile fp_ini;
-	CString csFilePath;
-	csFilePath = sFilePath.c_str();
+	bool bResult = 1;
+	if (!DirectoryExists(sDir))
+	{
+		bResult = CreateDirectory(WTOC(sDir), NULL);
 
-	if (CFile::GetStatus(csFilePath, fstat)) {
+		if (!bResult)
+		{
+			ReportError(_T("CreateDirectory"));
+			return bResult;
+		}
 	}
-	else {
-		fp_ini.Open(csFilePath, CFile::modeCreate | CFile::modeReadWrite);
+	return bResult;
+}
+
+const bool MakeFile(const SWstring sFilePath)
+{
+	CFile fp_ini;
+	bool bResult = fp_ini.Open(WTOC(sFilePath), CFile::modeCreate | CFile::modeReadWrite);
+	if (!bResult)
+	{
+		ReportError(_T("OpenFile"));
+		return bResult;
+	}
+	else
+	{
 		fp_ini.Close();
 	}
-	return false;
+	return bResult;
 }
 
-const SSstring ExtractFileName(const SSstring sPath)
+const SWstring ExtractFileName(const SWstring sPath)
 {
-	SSstring::size_type idx = sPath.find_last_of(_T("\\:/"));
+	SWstring::size_type idx = sPath.find_last_of(_T("\\:/"));
 
-	if (idx == SSstring::npos)
+	if (idx == SWstring::npos)
 		return sPath;
 
 	return sPath.substr(idx + 1, sPath.length() - idx);
 }
 
-const SSstring ExtractFilePath(const SSstring sPath)
+const SWstring ExtractFilePath(const SWstring sPath)
 {
-	SSstring::size_type idx = sPath.find_last_of(_T("\\:/"));
+	SWstring::size_type idx = sPath.find_last_of(_T("\\:/"));
 
-	if (idx == SSstring::npos)
+	if (idx == SWstring::npos)
 		return _T("");
 
 	return sPath.substr(0, idx + 1); // including /
 }
 
 
-const SSstring ExtractPureFileName(const SSstring sPath)
+const SWstring ExtractPureFileName(const SWstring sPath)
 {
-	const SSstring sFileName = ExtractFileName(sPath);
+	const SWstring sFileName = ExtractFileName(sPath);
 
-	SSstring::size_type idx = sFileName.find_last_of(_T("."));
-	if (idx != SSstring::npos)
+	SWstring::size_type idx = sFileName.find_last_of(_T("."));
+	if (idx != SWstring::npos)
 		return sFileName.substr(0, idx);
 
 	return sFileName;
 }
 
-const SSstring GetModuleDirectory()
+const SWstring GetModuleDirectory()
 {
 	TCHAR pModulePath[MAX_PATH] = _T("");
 	::GetModuleFileName(NULL, pModulePath, MAX_PATH);
 
-	SSstring sModuleDir(pModulePath);
+	SWstring sModuleDir(pModulePath);
 
 	sModuleDir = ExtractFilePath(sModuleDir);
 	//sModuleDir = EnsurePathDelimiter(sModuleDir);
@@ -128,20 +169,24 @@ const SSstring GetModuleDirectory()
 	return sModuleDir;
 }
 
-void SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
+bool SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
 {
-	CFile fp;
 	UINT16* usBuffer = (UINT16*)buffer;
 	INT16 *sBuffer = (INT16*)buffer;
 	// Save File
 	if (!filePath.IsEmpty())
 	{
-		SSstring wsFilePath = ExtractFilePath((LPCTSTR)filePath);
-		if (DirectoryExists(wsFilePath) == 0) 
+		SWstring wsFilePath = ExtractFilePath((LPCTSTR)filePath);
+		if (!DirectoryExists(wsFilePath)) 
 		{
-			MakeDirectory(wsFilePath);
+			bool bValidPath = 0;
+			bValidPath = MakeAllDirectory(wsFilePath);
+			//nh : Directory creation failed
+			if (!bValidPath)
+				return bValidPath;
 		}
 
+		CFile fp;
 		fp.Open(filePath, CFile::modeCreate | CFile::modeWrite, nullptr);
 		if (sign == TRUE)
 		{
@@ -153,4 +198,31 @@ void SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
 		}
 		fp.Close();
 	}
+	else
+	{	
+		//nh : Invalid CString
+		return false;
+	}
+}
+
+const bool SaveToFile(unsigned char * pData, int nSize, SWstring sFileName)
+{
+	FILE *fs = NULL;
+
+	errno_t err = SS_fopen_s(&fs, sFileName.c_str(), fsWB);
+	if (fs && err == 0)
+	{
+		fwrite(pData, nSize, 1, fs);
+
+		fflush(fs);
+
+		fclose(fs);
+		return true;
+	}
+	else
+	{
+		//LogDebug(_T("save memory to file error, %s"), sFileName.c_str());
+	}
+
+	return false;
 }

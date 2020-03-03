@@ -42,7 +42,7 @@ DWORD _tinet_addr(const TCHAR *cp)
 #endif
 }
 
-int ValidateAddress(SSstring sAddress)
+int ValidateAddress(SWstring sAddress)
 {
 	//SD_LOG_SCOPE_0;
 
@@ -55,13 +55,13 @@ int ValidateAddress(SSstring sAddress)
 	{
 		int nDigitLen = 0;
 		int nDotCount = 0;
-		SSstring sDigit = _T("");
+		SWstring sDigit = _T("");
 		for (int pos = 0; pos < nSize; pos++)
 		{
 			TCHAR Ch = sAddress[pos];
 			if (_T('0') <= Ch && Ch <= _T('9'))
 			{
-				sDigit = sDigit + SSstring(1, Ch);
+				sDigit = sDigit + SWstring(1, Ch);
 				nDigitLen++;
 				if (nDigitLen > 3)
 				{
@@ -176,7 +176,7 @@ int ValidateAddressA(string sAddress)
 	return true;
 }
 
-CSocket::CSocket(SSstring sAddress, int nPort, bool bTCPNoDelay)
+CSocket::CSocket(SWstring sAddress, int nPort, bool bTCPNoDelay)
 	: m_hSocket(NULL), m_nPort(nPort), m_bConnected(false), m_sAddress(sAddress)
 {
 	EnsureWinsock();

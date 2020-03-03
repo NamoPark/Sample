@@ -7,8 +7,7 @@ SS_Timer::SS_Timer()
     QueryPerformanceFrequency(&frequency);
     startCount.QuadPart = 0;
     endCount.QuadPart = 0;
-
-    stopped = 0;
+	stopped = 0;
     startTimeInMicroSec = 0;
     endTimeInMicroSec = 0;
 }

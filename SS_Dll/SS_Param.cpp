@@ -19,7 +19,7 @@ SS_App_Param::SS_App_Param(CString csBasePath)
 	m_ptDlgParam = nullptr;
 	b_Initialize = 1 ;
 
-	SSstring wsAppIniFilePath((LPCTSTR)csBasePath);
+	SWstring wsAppIniFilePath((LPCTSTR)csBasePath);
 	//Check, Make App ini File
 	CheckIniFile(wsAppIniFilePath);
 	//Set default path (ini, img, cal)
@@ -64,22 +64,22 @@ SS_App_Param::~SS_App_Param()
 	delete[] m_ptDlgParam;
 }
 
-void SS_App_Param::SetCalDirPath(SSstring CalPath)
+void SS_App_Param::SetCalDirPath(SWstring CalPath)
 {
 	wsCalDirPath = CalPath;
 }
 
-void SS_App_Param::SetImgDirPath(SSstring ImgPath)
+void SS_App_Param::SetImgDirPath(SWstring ImgPath)
 {
 	wsImgDirPath = ImgPath;
 }
 
-void SS_App_Param::SetAppIniFilePath(SSstring IniPath)
+void SS_App_Param::SetAppIniFilePath(SWstring IniPath)
 {
 	wsAppIniFilePath = IniPath;
 }
 
-void SS_App_Param::SetDetIniDirPath(SSstring IniPath)
+void SS_App_Param::SetDetIniDirPath(SWstring IniPath)
 {
 	wsDetIniDirPath = IniPath;
 }
@@ -104,21 +104,21 @@ void SS_App_Param::SetAppiniParam(tDlgParam * DlgParam)
 	m_ptDlgParam = DlgParam;
 }
 
-SSstring SS_App_Param::GetCalPath()
+SWstring SS_App_Param::GetCalPath()
 {
 	return wsCalDirPath;
 }
 
-SSstring SS_App_Param::GetImgPath()
+SWstring SS_App_Param::GetImgPath()
 {
 	return wsImgDirPath;
 }
 
-SSstring SS_App_Param::GetAppIniPath()
+SWstring SS_App_Param::GetAppIniPath()
 {
 	return wsAppIniFilePath;
 }
-SSstring SS_App_Param::GetDetIniPath()
+SWstring SS_App_Param::GetDetIniPath()
 {
 	return wsDetIniDirPath;
 }
@@ -237,7 +237,7 @@ int SS_App_Param::SaveLoad_AppIni(CString Sect, tDlgParam * DlgParam, int Method
 	return 0;
 }
 
-void SS_App_Param::CheckIniFile(SSstring wsBasePath)
+void SS_App_Param::CheckIniFile(SWstring wsBasePath)
 {
 	if (!(FileExists(wsBasePath)))	//if not exist
 	{
@@ -246,9 +246,9 @@ void SS_App_Param::CheckIniFile(SSstring wsBasePath)
 	gAppIni.SetFileName(wsBasePath.c_str());
 }
 
-void SS_App_Param::SetDefaultPath(SSstring wsBasePath)
+void SS_App_Param::SetDefaultPath(SWstring wsBasePath)
 {
-	SSstring wsDefaultPath = ExtractFilePath(wsBasePath);
+	SWstring wsDefaultPath = ExtractFilePath(wsBasePath);
 	SetAppIniFilePath(wsDefaultPath);
 	SetCalDirPath(wsDefaultPath + L"Cal\\");
 	SetImgDirPath(wsDefaultPath + L"Img\\");

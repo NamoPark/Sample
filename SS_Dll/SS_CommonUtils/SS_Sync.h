@@ -6,11 +6,11 @@
 class CCriticalSection
 {
 	CRITICAL_SECTION m_oCS;
-	SSstring m_sName;
+	SWstring m_sName;
 	CCriticalSection(const CCriticalSection &o) = delete;
 	CCriticalSection& operator = (const CCriticalSection &o) = delete;
 public:
-	CCriticalSection(SSstring name = _T("critical section"));
+	CCriticalSection(SWstring name = _T("critical section"));
 	virtual ~CCriticalSection();
 	
 	void Enter();

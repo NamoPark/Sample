@@ -14,16 +14,16 @@ DWORD _tinet_addr(const TCHAR *cp);
 class CSocket 
 {
 	SOCKET m_hSocket;
-	SSstring m_sAddress;
+	SWstring m_sAddress;
 	int  m_nPort;
 	struct sockaddr_in m_Address; 
 	int m_bConnected;
 	CSocket(const CSocket &o) = delete;
 	CSocket& operator = (const CSocket &o) = delete;
 public:
-	CSocket(SSstring sAddress, int nPort, bool bTCPNoDelay = true);
+	CSocket(SWstring sAddress, int nPort, bool bTCPNoDelay = true);
 	virtual ~CSocket();
-	SSstring &Address() { return m_sAddress; }
+	SWstring &Address() { return m_sAddress; }
 	void Close();
 };
 
@@ -50,7 +50,7 @@ inline void SafeDeleteSocket(CSocket **ppSocket)
 	}
 }
 
-int ValidateAddress(SSstring sAddress);
+int ValidateAddress(SWstring sAddress);
 int ValidateAddressA(string sAddress);
 
 
