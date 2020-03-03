@@ -5,7 +5,7 @@
 #include "SS_Dll.h"
 #include "Misc.h"
 #include "Common/Cmd_List.h"
-#include "SS_Logger/Logger.h"
+#include "Log/Logger.h"
 
 
 #define UDP_MAX_PSIZE 65000
@@ -114,9 +114,10 @@ tDLIB_CBRec* AD_Connect(int AFlags, tDLIB_CBProc ACallBackProc,
 	if (ixTCP_Soc != INVALID_SOCKET) {
 		char message[30] = "SendStart";
 		send(ixTCP_Soc, message, 30, 0);
+		ix_ThreadDataListen = (HANDLE)_beginthreadex(NULL, 0, DataListenThread,NULL, 0, &qThreadID);
+		SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
 		ix_ThreadFileSave = (HANDLE)_beginthreadex(NULL, 0, FileSaveThread, NULL, 0, &qThreadID);
-		ix_ThreadDataListen = (HANDLE)_beginthreadex(NULL, 0, DataListenThread, NULL, 0, &qThreadID);
-		//SetThreadPriority(ix_ThreadDataListen, THREAD_PRIORITY_TIME_CRITICAL);
+
 	}
 	else 
 	{
@@ -298,8 +299,9 @@ static UINT WINAPI DataListenThread(void *AParam)
 	BYTE qBuf[UDP_MAX_PSIZE];
 	BYTE *FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
 	BYTE *FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-	unsigned short RecvImageCount = 0;
-	unsigned short RecvPacketCount= 0;
+	unsigned short ImageCnt;
+	unsigned short PacketIndex;
+	int recv_count = 0;
 
 	while (!VaU3_MutexLocked(cMutexID))
 	{
@@ -307,33 +309,40 @@ static UINT WINAPI DataListenThread(void *AParam)
 			qL = recv(ixTCP_Soc, (char*)qBuf, UDP_MAX_PSIZE, 0);
 			if (!(qL == SOCKET_ERROR))
 			{
-
-				unsigned short SendPacketCount = *((unsigned short*)(qBuf + 2));
-				if (RecvPacketCount != SendPacketCount)
+				if (qL == (NP * sizeof(unsigned short) % UDP_MAX_PSIZE)) 
 				{
-					unsigned short SendImageCount = *((unsigned short*)(qBuf));
-					if (RecvImageCount != SendImageCount) 
+					if (recv_count != 290) 
 					{
-						SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error\nRecvPacketCount : %d , SendPacketCount : %d , RecvImageCount : %d ,SendImageCount : %d "),RecvPacketCount, SendPacketCount, RecvImageCount, SendImageCount);
+						SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Error Recv Count : %d "), 290 - recv_count);
 						FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
-						RecvPacketCount = 0;
-						RecvImageCount = SendImageCount;
+						recv_count = 0;
+						continue;
 					}
-					FrameBufferCurr+=(UDP_MAX_PSIZE*(SendPacketCount - RecvPacketCount));
-					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error 22 \nRecvPacketCount : %d , SendPacketCount : %d , FrameBufferCurr : %x ,FrameBufferMax : %x "), RecvPacketCount, SendPacketCount, FrameBufferCurr, FrameBufferMax);
-					RecvPacketCount = SendPacketCount;
+				}
+				if (FrameBufferCurr + qL > FrameBufferMax) 
+				{
+					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Error Overflow : %d "), 290 - recv_count);
+					FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
+					recv_count = 0;
 				}
 				memcpy(FrameBufferCurr, qBuf, qL);
+
+				if (recv_count == 0)
+				{
+					unsigned short usTemp = *((unsigned short*)(FrameBufferCurr));
+					unsigned short usPacketIndex = *((unsigned short*)(FrameBufferCurr + 2));	
+					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("PacketIndex = %hd Image Cnt = %hd"), usPacketIndex, usTemp);
+
+				}
 				FrameBufferCurr += qL;
-				RecvPacketCount++;
+				recv_count++;
 			}
 			if (FrameBufferCurr == FrameBufferMax)
 			{
 				(theApp.ssFrameSave)->addFrame();
 				FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
 				FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-				RecvPacketCount = 0;
-				RecvImageCount++;
+				recv_count = 0;
 			}
 	}
 	return 0;

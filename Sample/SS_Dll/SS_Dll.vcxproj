@@ -214,7 +214,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SystemStatus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def" />
@@ -225,6 +224,8 @@
     <ClInclude Include="Common\ParameterStruct.h" />
     <ClInclude Include="Ginifile.h" />
     <ClInclude Include="GIniFile_Template.hpp" />
+    <ClInclude Include="Log\Logger.h" />
+    <ClInclude Include="Log\threading.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="SS_Calibration.h" />
     <ClInclude Include="SS_Caputre.h" />
@@ -234,13 +235,10 @@
     <ClInclude Include="SS_file_utils.h" />
     <ClInclude Include="SS_FrameSaver.h" />
     <ClInclude Include="SS_Interface.h" />
-    <ClInclude Include="SS_Logger\Logger.h" />
-    <ClInclude Include="SS_Logger\threading.h" />
     <ClInclude Include="SS_Param.h" />
     <ClInclude Include="SS_socket.h" />
     <ClInclude Include="SS_sync.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="SystemStatus.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>

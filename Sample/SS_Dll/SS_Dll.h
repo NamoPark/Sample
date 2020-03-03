@@ -2,7 +2,7 @@
 //
 
 #pragma once
-#include "SS_Logger/Logger.h"
+#include "Log/Logger.h"
 #include "SS_Param.h"
 #include "GIniFile.h"
 #include "SS_FrameSaver.h"
