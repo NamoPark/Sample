@@ -14,6 +14,7 @@ SS_FrameSaver::SS_FrameSaver() //: mtVector(_T("FrameSaveVector"))
 	imageW = 0;
 	frameSize = 0;
 	vImageFrame =NULL;
+	ptrMat = NULL;
 }
 
 
@@ -25,6 +26,15 @@ SS_FrameSaver::~SS_FrameSaver()
 	}
 	pixels.clear();
 	delete[] vImageFrame;
+
+	for (int i = 0; i < vqMat.size(); i++)
+	{
+		delete vqMat[i];
+	}
+	vqMat.clear();
+
+	if(ptrMat!=NULL)
+	delete ptrMat;
 
 }
 

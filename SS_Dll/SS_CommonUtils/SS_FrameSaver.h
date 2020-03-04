@@ -31,12 +31,12 @@ public	:
 	//bool isErrEmpty();
 	//void saveToErrDisk(int pType);	
 	//void addErrFrame(const unsigned char* pixelsToCopy, unsigned int Size);
-	void oc_addFrame();
-	void oc_saveToDisk(int pType);
-	void oc_pop(int pType);
-	bool oc_isEmpty();
-	BYTE * oc_getFrame();
-	BYTE * oc_getReturnFrame();
+	//void oc_addFrame();
+	//void oc_saveToDisk(int pType);
+	//void oc_pop(int pType);
+	//bool oc_isEmpty();
+	//BYTE * oc_getFrame();
+	//BYTE * oc_getReturnFrame();
 private	:
 	bool						paused;
 	bool						Err_paused;
@@ -51,7 +51,7 @@ private	:
 	//vector<unsigned char*>	Err_pixels;
 	//CCriticalSection			vtErrFrameMutex;
 
-	Mat							*ptrMat;
-	vector<Mat*>				vqMat;
+	//Mat							*ptrMat;
+	//vector<Mat*>				vqMat;
 };
 
