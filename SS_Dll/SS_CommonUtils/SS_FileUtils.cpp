@@ -207,12 +207,23 @@ bool SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
 
 const bool SaveToFile(unsigned char * pData, int nSize, SWstring sFileName)
 {
-	FILE *fs = NULL;
 
+
+	SWstring wsFilePath = ExtractFilePath(sFileName);
+	if (!DirectoryExists(wsFilePath))
+	{
+		bool bValidPath = 0;
+		bValidPath = MakeAllDirectory(wsFilePath);
+		if (!bValidPath)
+			return bValidPath;
+	}
+
+	UINT16* usBuffer = (UINT16*)pData;
+	FILE *fs = NULL;
 	errno_t err = SS_fopen_s(&fs, sFileName.c_str(), fsWB);
 	if (fs && err == 0)
 	{
-		fwrite(pData, nSize, 1, fs);
+		fwrite(usBuffer, nSize, 1, fs);
 
 		fflush(fs);
 

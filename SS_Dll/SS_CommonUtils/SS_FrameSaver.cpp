@@ -63,7 +63,7 @@ void SS_FrameSaver::saveToDisk(int pType)
 	SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Size = %d , PacketIndex = %hd Image Cnt = %hd"), pixels.size(), usPacketIndex, usTemp);
 
 	//SaveRawFrame(csTemp,0, ucTemp, frameSize);
-	SaveToFile((unsigned char*)usTemp, frameSize, CTOW(csTemp));
+	SaveToFile((unsigned char*)ucTemp, frameSize, CTOW(csTemp));
 }
 
 
