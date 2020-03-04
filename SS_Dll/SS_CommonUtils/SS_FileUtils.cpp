@@ -207,15 +207,13 @@ bool SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length)
 
 const bool SaveToFile(unsigned char * pData, int nSize, SWstring sFileName)
 {
-
-
 	SWstring wsFilePath = ExtractFilePath(sFileName);
+	bool bOK = 1;
 	if (!DirectoryExists(wsFilePath))
 	{
-		bool bValidPath = 0;
-		bValidPath = MakeAllDirectory(wsFilePath);
-		if (!bValidPath)
-			return bValidPath;
+		bOK = MakeAllDirectory(wsFilePath);
+		if (!bOK)
+			return bOK;
 	}
 
 	UINT16* usBuffer = (UINT16*)pData;
@@ -228,12 +226,13 @@ const bool SaveToFile(unsigned char * pData, int nSize, SWstring sFileName)
 		fflush(fs);
 
 		fclose(fs);
-		return true;
+		return bOK;
 	}
 	else
 	{
 		//LogDebug(_T("save memory to file error, %s"), sFileName.c_str());
 	}
 
-	return false;
+	return bOK;
 }
+

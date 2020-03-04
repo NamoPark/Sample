@@ -18,6 +18,5 @@ const bool MakeDirectory			(const SWstring sDirName);
 const bool MakeFile					(const SWstring sFilePath);
 const bool SaveToFile				(unsigned char *pData, int nSize, SWstring sFileName);
 
-
 bool SaveRawFrame(CString filePath, bool sign, void *buffer, UINT length);
 

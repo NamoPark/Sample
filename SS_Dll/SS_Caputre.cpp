@@ -7,7 +7,6 @@
 #include "SS_CommonFW/Cmd_List.h"
 #include "SS_Logger/Logger.h"
 
-
 #define UDP_MAX_PSIZE 65000
 //// Statics --
 static BYTE *ix_FrameBufferCurr = NULL;
@@ -276,7 +275,6 @@ static UINT WINAPI DataListenThread(void *AParam)
 	// shlee
 	//if (theApp.IsInitialized() == 0)
 	//	return NULL;
-
 	unsigned int rcvBuf = MAX_BUFF_SIZE;
 	bool state;
 	int len =sizeof(rcvBuf);
@@ -296,7 +294,7 @@ static UINT WINAPI DataListenThread(void *AParam)
 	int NP = tpDlgParam->ImgDim.rFrameHeight * tpDlgParam->ImgDim.rFrameWidth;
 	(theApp.ssFrameSave)->setup(tpDlgParam->ImgDim.rFrameHeight, tpDlgParam->ImgDim.rFrameWidth, sizeof(UINT16), tpDlgParam->PathCal);
 	BYTE qBuf[UDP_MAX_PSIZE];
-	BYTE *FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
+	BYTE *FrameBufferCurr = (theApp.ssFrameSave)->oc_getFrame();
 	BYTE *FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
 	unsigned short RecvImageCount = 0;
 	unsigned short RecvPacketCount= 0;
@@ -315,7 +313,7 @@ static UINT WINAPI DataListenThread(void *AParam)
 					if (RecvImageCount != SendImageCount) 
 					{
 						SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error\nRecvPacketCount : %d , SendPacketCount : %d , RecvImageCount : %d ,SendImageCount : %d "),RecvPacketCount, SendPacketCount, RecvImageCount, SendImageCount);
-						FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
+						FrameBufferCurr = (theApp.ssFrameSave)->oc_getReturnFrame();
 						RecvPacketCount = 0;
 						RecvImageCount = SendImageCount;
 					}
@@ -329,8 +327,8 @@ static UINT WINAPI DataListenThread(void *AParam)
 			}
 			if (FrameBufferCurr == FrameBufferMax)
 			{
-				(theApp.ssFrameSave)->addFrame();
-				FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
+				(theApp.ssFrameSave)->oc_addFrame();
+				FrameBufferCurr = (theApp.ssFrameSave)->oc_getFrame();
 				FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
 				RecvPacketCount = 0;
 				RecvImageCount++;
@@ -344,10 +342,10 @@ static UINT WINAPI FileSaveThread(void *AParam)
 	while (!VaU3_MutexLocked(cMutexID))
 	{
 		
-		while(!((theApp.ssFrameSave)->isEmpty()))
+		while(!((theApp.ssFrameSave)->oc_isEmpty()))
 		{
-			(theApp.ssFrameSave)->saveToDisk(FRONT);
-			(theApp.ssFrameSave)->pop(FRONT);
+			(theApp.ssFrameSave)->oc_saveToDisk(FRONT);
+			(theApp.ssFrameSave)->oc_pop(FRONT);
 		}
 	}
 	return 0;

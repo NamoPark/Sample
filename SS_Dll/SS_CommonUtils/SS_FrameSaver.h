@@ -2,8 +2,12 @@
 #include "../stdafx.h"
 #include "SS_sync.h"
 #include "SS_SystemStatus.h"
+#include "opencv2/opencv.hpp"
 #include <vector>
+
 using namespace std;
+using namespace cv; 
+
 #define FRONT 0
 #define BACK 1
 
@@ -27,8 +31,12 @@ public	:
 	//bool isErrEmpty();
 	//void saveToErrDisk(int pType);	
 	//void addErrFrame(const unsigned char* pixelsToCopy, unsigned int Size);
-
-
+	void oc_addFrame();
+	void oc_saveToDisk(int pType);
+	void oc_pop(int pType);
+	bool oc_isEmpty();
+	BYTE * oc_getFrame();
+	BYTE * oc_getReturnFrame();
 private	:
 	bool						paused;
 	bool						Err_paused;
@@ -38,14 +46,12 @@ private	:
 	BYTE *						vImageFrame;
 	CString						savePath;
 	vector<unsigned char*>		pixels;
-	//vector<unsigned char*>		Err_pixels;
 	CCriticalSection			vtFrameMutex;
-	CCriticalSection			vtErrFrameMutex;
+	
+	//vector<unsigned char*>	Err_pixels;
+	//CCriticalSection			vtErrFrameMutex;
 
-
-
-	//size_t	netAdaptorCount = 0;
-	//LONG	*pArrayNetValue = nullptr;
-
+	Mat							*ptrMat;
+	vector<Mat*>				vqMat;
 };
 
