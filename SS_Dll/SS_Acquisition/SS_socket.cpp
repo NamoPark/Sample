@@ -10,36 +10,14 @@
 
 using namespace std;
 
-int g_WSAStartupOK = false;
-
-void EnsureWinsock()
-{
-	if (g_WSAStartupOK == false)
-	{
-		g_WSAStartupOK = true;
-
-		WSAData wsaData;
-		int nResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-		if (nResult != NO_ERROR)
-		{
-		}
-	}
-}
-
-
 DWORD _tinet_addr(const TCHAR *cp)
 {
-#ifdef UNICODE
 	char IP[16];
 	int Ret = 0;
 
 	Ret = WideCharToMultiByte(CP_ACP, 0, cp, (int)_tcslen(cp), IP, 15, NULL, NULL);
 	IP[Ret] = 0;
-
 	return inet_addr(IP);
-#else
-	return inet_addr(cp);
-#endif
 }
 
 int ValidateAddress(SWstring sAddress)
@@ -176,29 +154,41 @@ int ValidateAddressA(string sAddress)
 	return true;
 }
 
-CSocket::CSocket(SWstring sAddress, int nPort, bool bTCPNoDelay)
+CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 	: m_hSocket(NULL), m_nPort(nPort), m_bConnected(false), m_sAddress(sAddress)
 {
-	EnsureWinsock();
+	WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-	//----------------------
-    // Create a SOCKET for connecting to server
-    m_hSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (m_hSocket == INVALID_SOCKET) 
+	if (bNetProtocol == SS_TCP)
 	{
-
-        //throw ESocket(_T("error at socket()"), WSAGetLastError());
-    }
-
-	if (bTCPNoDelay)
+		m_hSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	}
+	else if (bNetProtocol == SS_UDP) 
 	{
-		int nNodelay = true;
-		setsockopt(m_hSocket, IPPROTO_TCP, TCP_NODELAY, (const char *)&nNodelay, sizeof(int));
+		m_hSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	}
 
-    //----------------------
-    // The sockaddr_in structure specifies the address family,
-    // IP address, and port of the server to be connected to.
+    if (m_hSocket == INVALID_SOCKET) 
+	{
+		//throw ESocket(_T("error at socket()"), WSAGetLastError());
+    }
+
+	unsigned int rcvBuf = MAX_BUFF_SIZE;
+	bool state;
+	int len = sizeof(rcvBuf);
+	if (bNetProtocol == SS_TCP)
+	{
+		//state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
+	}
+	else if (bNetProtocol == SS_UDP)
+	{
+		state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
+	}
+
+	if (state == SOCKET_ERROR)
+	{
+		//throw ESocket(_T("error at socket()"), WSAGetLastError());
+	}
 
     m_Address.sin_family = AF_INET;
     m_Address.sin_addr.s_addr = _tinet_addr(sAddress.c_str());
@@ -243,17 +233,6 @@ void CSocket::Close()
 						//Logdebug(_T("shutdown WSACode = 0x%08X"), nWSACode);
 					}
 				}
-
-				// recognize FIN signal.
-				//try
-				//{
-				//	this->ReadFIN();
-				//}
-				//catch (ESocket)
-				//{
-				//	// //Logdebug("received FIN (type1)");
-				//}
-
 				m_bConnected = false;
 			}
 

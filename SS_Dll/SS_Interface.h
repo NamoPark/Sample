@@ -6,7 +6,12 @@
 #include <tchar.h>
 #include "SS_CommonUtils/SS_StringDefines.h"
 
-#define SS_SDK_EXPORT 
+#define SS_SDK_EXPORT
+
+//Network Define
+#define SS_TCP		0
+#define SS_UDP		1
+
 typedef struct _tPacket {
 	INT32 rStatus;
 	UINT16 rData[1024];

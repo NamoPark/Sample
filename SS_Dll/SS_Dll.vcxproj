@@ -198,8 +198,11 @@
   <ItemGroup>
     <ClCompile Include="GIniFile.cpp" />
     <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="SS_Acquisition\SS_socket.cpp" />
+    <ClCompile Include="SS_Acquisition\SS_socket_exception.cpp" />
     <ClCompile Include="SS_Calibration.cpp" />
     <ClCompile Include="SS_Caputre.cpp" />
+    <ClCompile Include="SS_CommonUtils\SS_exception.cpp" />
     <ClCompile Include="SS_CommonUtils\SS_FileUtils.cpp" />
     <ClCompile Include="SS_CommonUtils\SS_FrameSaver.cpp" />
     <ClCompile Include="SS_CommonUtils\SS_Sync.cpp" />
@@ -209,7 +212,6 @@
     <ClCompile Include="SS_Interface.cpp" />
     <ClCompile Include="SS_Interface_Internal.cpp" />
     <ClCompile Include="SS_Param.cpp" />
-    <ClCompile Include="SS_socket.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -227,8 +229,11 @@
     <ClInclude Include="Ginifile.h" />
     <ClInclude Include="GIniFile_Template.hpp" />
     <ClInclude Include="Misc.h" />
+    <ClInclude Include="SS_Acquisition\SS_socket.h" />
+    <ClInclude Include="SS_Acquisition\SS_socket_exception.h" />
     <ClInclude Include="SS_Calibration.h" />
     <ClInclude Include="SS_Caputre.h" />
+    <ClInclude Include="SS_CommonUtils\SS_exception.h" />
     <ClInclude Include="SS_CommonUtils\SS_FileUtils.h" />
     <ClInclude Include="SS_CommonUtils\SS_FrameSaver.h" />
     <ClInclude Include="SS_CommonUtils\SS_StringDefines.h" />
@@ -241,7 +246,6 @@
     <ClInclude Include="SS_Logger\Logger.h" />
     <ClInclude Include="SS_Logger\threading.h" />
     <ClInclude Include="SS_Param.h" />
-    <ClInclude Include="SS_socket.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
