@@ -1,6 +1,7 @@
 
 
 #include "SS_socket.h"
+#include "SS_socket_exception.h"
 
 
 #include <iostream>
@@ -157,7 +158,10 @@ int ValidateAddressA(string sAddress)
 CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 	: m_hSocket(NULL), m_nPort(nPort), m_bConnected(false), m_sAddress(sAddress)
 {
-	WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) 
+	{
+		throw ESocket(_T("error at socket()"), WSAGetLastError());
+	};
 
 	if (bNetProtocol == SS_TCP)
 	{
@@ -170,7 +174,7 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 
     if (m_hSocket == INVALID_SOCKET) 
 	{
-		//throw ESocket(_T("error at socket()"), WSAGetLastError());
+		throw ESocket(_T("error at socket()"), WSAGetLastError());
     }
 
 	unsigned int rcvBuf = MAX_BUFF_SIZE;
@@ -187,7 +191,7 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 
 	if (state == SOCKET_ERROR)
 	{
-		//throw ESocket(_T("error at socket()"), WSAGetLastError());
+		throw ESocket(_T("error at socket()"), WSAGetLastError());
 	}
 
     m_Address.sin_family = AF_INET;

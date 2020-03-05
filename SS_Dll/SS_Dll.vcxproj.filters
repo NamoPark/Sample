@@ -78,6 +78,12 @@
     <ClCompile Include="SS_CommonUtils\SS_exception.cpp">
       <Filter>CommonUtils</Filter>
     </ClCompile>
+    <ClCompile Include="SS_Acquisition\SS_acquisition_base_dynamic.cpp">
+      <Filter>Acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="SS_Acquisition\SS_acquisition_base_static.cpp">
+      <Filter>Acquisition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def">
@@ -159,6 +165,12 @@
     </ClInclude>
     <ClInclude Include="SS_CommonUtils\SS_exception.h">
       <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_Acquisition\SS_acquisition_base_dynamic.h">
+      <Filter>Acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_Acquisition\SS_acquisition_base_static.h">
+      <Filter>Acquisition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

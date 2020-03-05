@@ -28,9 +28,6 @@ public:
 	void Close();
 };
 
-
-void EnsureWinsock();
-
 inline void SafeDeleteSocket(CSocket **ppSocket)
 {
 	if (ppSocket)
