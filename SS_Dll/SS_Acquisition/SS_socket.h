@@ -9,7 +9,7 @@ using namespace std;
 DWORD _tinet_addr(const TCHAR *cp);
 
 #define CONNECT_INFINITE	0
-#define MAX_BUFF_SIZE		0xFFFFFFFF
+#define SET_SOCK_MAX_BUFF_SIZE		0xFFFFFFFF
 // for client socket
 class CSocket 
 {

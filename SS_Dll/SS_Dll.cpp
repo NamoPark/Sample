@@ -64,22 +64,6 @@ BOOL CSS_DllApp::InitInstance()
 
 	ssFrameSave = new SS_FrameSaver;
 
-	nRet = WSAStartup(0x0101, &wsaData);
-	if (nRet)
-	{
-		//		fprintf(stderr,_T("\nWSAStartup() error : %d\n"), nRet);
-		WSACleanup();
-		FreeLibrary((HINSTANCE)hndlIcmp);
-		return -1;
-	}
-
-	if (0x0101 != wsaData.wVersion)
-	{
-		//		fprintf(stderr,_T("\nThis computer cannot support winsock 1.1\n"));
-		WSACleanup();
-		FreeLibrary((HINSTANCE)hndlIcmp);
-		return -1;
-	}
 	//log class create
 	return true;
 }

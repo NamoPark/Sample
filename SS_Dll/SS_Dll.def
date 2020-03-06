@@ -7,6 +7,6 @@ EXPORTS
 	
 	ssCaptureStart
 	ssCaptureStop
-	ssInitialize
+	ssCreateDetector
 	ssDeInitialize
 	ssGetAppParam

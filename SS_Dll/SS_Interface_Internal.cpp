@@ -48,13 +48,6 @@ int _stdcall ssCaptureStop()
 	return 0;
 }
 
-int _stdcall ssInitialize(CString cstrFilePath)
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	theApp.ssAppParam = new SS_App_Param(cstrFilePath);
-	return theApp.ssAppParam->bInitialized();
-}
-
 int _stdcall ssDeInitialize()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

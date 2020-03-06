@@ -177,7 +177,7 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 		throw ESocket(_T("error at socket()"), WSAGetLastError());
     }
 
-	unsigned int rcvBuf = MAX_BUFF_SIZE;
+	unsigned int rcvBuf = SET_SOCK_MAX_BUFF_SIZE;
 	bool state;
 	int len = sizeof(rcvBuf);
 	if (bNetProtocol == SS_TCP)

@@ -84,6 +84,9 @@
     <ClCompile Include="SS_Acquisition\SS_acquisition_base_static.cpp">
       <Filter>Acquisition</Filter>
     </ClCompile>
+    <ClCompile Include="SS_Acquisition\SS_detector.cpp">
+      <Filter>Acquisition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def">

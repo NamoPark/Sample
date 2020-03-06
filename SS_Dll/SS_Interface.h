@@ -176,7 +176,7 @@ extern "C" {
 	SS_API int _stdcall	ssCaptureStart(tDLIB_CBProc AUserCallBackProc, void *AUserParam,
 		tAcqPar* argAcqPar = nullptr, int bPreview = 0);
 	SS_API int _stdcall	ssCaptureStop();
-	SS_API int _stdcall ssInitialize(CString cstrFilePath);
+	SS_API int _stdcall ssCreateDetector(CString cstrFilePath);
 	SS_API int _stdcall ssDeInitialize();
 	SS_API tDlgParam* _stdcall ssGetAppParam();
 #else
@@ -184,7 +184,7 @@ extern "C" {
 	int(_stdcall *ssCaptureStart)		(tDLIB_CBProc AUserCallBackProc, void *AUserParam,
 		tAcqPar* argAcqPar = nullptr, int bPreview = 0);
 	int(_stdcall *ssCaptureStop)		();
-	int(_stdcall *ssInitialize)			(CString cstrFilePath);
+	int(_stdcall *ssCreateDetector)			(CString cstrFilePath);
 	int(_stdcall *ssDeInitialize)		();
 	tDlgParam*(_stdcall *ssGetAppParam)	();
 #endif

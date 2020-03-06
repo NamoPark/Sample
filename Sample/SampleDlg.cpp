@@ -161,23 +161,14 @@ BOOL CSampleDlg::OnInitDialog()
 	theApp.cstr_AppIniPath = l_strBuf;
 	theApp.cstr_AppIniPath = theApp.cstr_AppIniPath.Left(theApp.cstr_AppIniPath.GetLength() - 4); // Remove extension (.exe)
 	theApp.cstr_AppIniPath = theApp.cstr_AppIniPath + _T(".ini");
-	bAppInitialize = ssInitialize(theApp.cstr_AppIniPath);
+	
+	bAppInitialize = ssCreateDetector(theApp.cstr_AppIniPath);
 
 	if (!bAppInitialize) 
 	{
 		MessageBox(_T("App Initialize Fail"));
 	}
 	theApp.m_AppDlgParam = ssGetAppParam();
-
-
-	if (!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
-	{
-		DWORD dwError = GetLastError();
-		CString strMsg;
-		strMsg.Format(_T("Failed to enter ABOVE_NORMAL_PRIORITY_CLASS mode (%d)"), dwError);
-		AfxMessageBox(strMsg);
-	}
-
 	return true;  // 포커스를 컨트롤에 설정하지 않으면 true를 반환합니다.
 }
 
