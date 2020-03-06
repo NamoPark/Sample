@@ -200,7 +200,6 @@
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="SS_Acquisition\SS_acquisition_base_dynamic.cpp" />
     <ClCompile Include="SS_Acquisition\SS_acquisition_base_static.cpp" />
-    <ClCompile Include="SS_Acquisition\SS_detector.cpp" />
     <ClCompile Include="SS_Acquisition\SS_socket.cpp" />
     <ClCompile Include="SS_Acquisition\SS_socket_exception.cpp" />
     <ClCompile Include="SS_Calibration.cpp" />
