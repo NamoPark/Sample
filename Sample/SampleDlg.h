@@ -4,7 +4,7 @@
 
 #pragma once
 
-
+#include "../SS_Dll/SS_Interface.h"
 
 // CSampleDlg 대화 상자
 class CSampleDlg : public CDialogEx
@@ -24,9 +24,8 @@ public:
 
 // 구현입니다.
 protected:
+
 	HICON m_hIcon;
-	bool bAppInitialize;
-	bool bDetInitialize;
 
 	// 생성된 메시지 맵 함수
 	virtual BOOL OnInitDialog();
@@ -37,8 +36,6 @@ protected:
 public:
 	afx_msg void OnBnClickedCapture();
 	afx_msg void OnBnClickedStop();
-
-	tAcqPar m_AcqPar;
-
 	afx_msg void OnDestroy();
+	SS_Detector temp_detector;
 };

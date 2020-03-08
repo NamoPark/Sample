@@ -24,9 +24,6 @@ public:
 public:
 	virtual BOOL InitInstance();
 
-	CString cstr_AppIniPath;
-	tDlgParam *m_AppDlgParam;
-	int m_lastSelected;
 // 구현입니다.
 
 	DECLARE_MESSAGE_MAP()

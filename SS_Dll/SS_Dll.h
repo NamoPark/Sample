@@ -3,8 +3,6 @@
 
 #pragma once
 #include "SS_Logger/Logger.h"
-#include "SS_Param.h"
-#include "GIniFile.h"
 #include "SS_CommonUtils/SS_FrameSaver.h"
 #ifndef __AFXWIN_H__
 	#error "PCH에 대해 이 파일을 포함하기 전에 'stdafx.h'를 포함합니다."
@@ -22,7 +20,6 @@ using namespace framework::Diagnostics;
 
 
 class SS_Calibration;
-typedef struct _tDLIB_CBR tDLIB_CBRec;
 
 // ----- Detector Model -----
 enum class DetModel {
@@ -43,21 +40,11 @@ public:
 
 // 재정의입니다.
 public:
-	WSADATA	wsaData;
 	HANDLE hndlIcmp;
-	int nRet;
-	virtual BOOL InitInstance();
 	CLogger<CIntraProcessLock>* pSSLogger;
-	SS_App_Param* ssAppParam;
-	SS_Calibration* m_pD_Calibration = nullptr;
-	SS_FrameSaver* ssFrameSave;
-	CWinThread *m_pThread;
-	tDLIB_CBRec* m_DLIB_CBR;
-	int mMutex(int &pIMutex, int pCnt);
-	static UINT CloseThread(LPVOID pParam);
-	void CreateCalibration();
 
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 
 };

@@ -2,7 +2,7 @@
  **    Interface for the GIniFile class                             **
  **                                                     by S.B.     **
  ** *************************************************************** **/
-
+#include "../stdafx.h"
 #pragma once
 
 #define cMaxStrLength 512

@@ -36,18 +36,6 @@
     <ClCompile Include="SS_Interface.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SS_Interface_Internal.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SS_Param.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SS_Calibration.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SS_Caputre.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="SS_CommonUtils\SS_FrameSaver.cpp">
       <Filter>CommonUtils</Filter>
     </ClCompile>
@@ -69,12 +57,6 @@
     <ClCompile Include="SS_Acquisition\SS_socket_exception.cpp">
       <Filter>Acquisition</Filter>
     </ClCompile>
-    <ClCompile Include="GIniFile.cpp">
-      <Filter>CommonUtils</Filter>
-    </ClCompile>
-    <ClCompile Include="Misc.cpp">
-      <Filter>CommonUtils</Filter>
-    </ClCompile>
     <ClCompile Include="SS_CommonUtils\SS_exception.cpp">
       <Filter>CommonUtils</Filter>
     </ClCompile>
@@ -83,6 +65,15 @@
     </ClCompile>
     <ClCompile Include="SS_Acquisition\SS_acquisition_base_static.cpp">
       <Filter>Acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="SS_Interface_Internal.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SS_Acquisition\SS_detector.cpp">
+      <Filter>Acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="SS_CommonUtils\GIniFile.cpp">
+      <Filter>CommonUtils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,15 +98,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="SS_Interface.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SS_Param.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SS_Calibration.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SS_Caputre.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Common\Cmd_List.h">
@@ -154,15 +136,6 @@
     <ClInclude Include="SS_Acquisition\SS_socket_exception.h">
       <Filter>Acquisition</Filter>
     </ClInclude>
-    <ClInclude Include="Ginifile.h">
-      <Filter>CommonUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="GIniFile_Template.hpp">
-      <Filter>CommonUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="Misc.h">
-      <Filter>CommonUtils</Filter>
-    </ClInclude>
     <ClInclude Include="SS_CommonUtils\SS_exception.h">
       <Filter>CommonUtils</Filter>
     </ClInclude>
@@ -171,6 +144,15 @@
     </ClInclude>
     <ClInclude Include="SS_Acquisition\SS_acquisition_base_static.h">
       <Filter>Acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\Ginifile.h">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\GIniFile_Template.hpp">
+      <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_CommonUtils\SS_data.h">
+      <Filter>CommonUtils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

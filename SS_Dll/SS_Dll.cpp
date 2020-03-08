@@ -3,8 +3,6 @@
 
 #include "stdafx.h"
 #include "SS_Dll.h"
-#include "SS_Calibration.h"
-#include "SS_Caputre.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -61,44 +59,13 @@ BOOL CSS_DllApp::InitInstance()
 	SWstring TestModelName(L"OD1012");
 	pSSLogger = new CLogger<CIntraProcessLock>(LogLevel::Info, TestModelName);
 	SS_LOG((*pSSLogger), LogLevel::Info, _T("ProgramStart"));
-
-	ssFrameSave = new SS_FrameSaver;
-
 	//log class create
 	return true;
-}
-
-void CSS_DllApp::CreateCalibration()
-{
-	m_pD_Calibration = new SS_Calibration();
 }
 
 int CSS_DllApp::ExitInstance()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	delete ssFrameSave;
 	delete pSSLogger;
-	delete m_pD_Calibration;
-	ssDeInitialize();
 	return CWinApp::ExitInstance();
-}
-
-int bCloseMutex = 0;
-UINT CSS_DllApp::CloseThread(LPVOID pParam)
-{
-	ACQ_Close();
-	return 0;
-}
-int CSS_DllApp::mMutex(int & pIMutex, int pCnt)
-{
-	int Cnt = 0;
-	while (pIMutex) {
-		Sleep(20);
-		Cnt += 20;
-		if (Cnt >= pCnt)
-		{
-			pIMutex = 0;
-		}
-	}
-	return 0;
 }
