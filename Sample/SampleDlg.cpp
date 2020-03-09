@@ -64,8 +64,6 @@ BEGIN_MESSAGE_MAP(CSampleDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_Capture, &CSampleDlg::OnBnClickedCapture)
-	ON_BN_CLICKED(IDC_Stop, &CSampleDlg::OnBnClickedStop)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
@@ -103,9 +101,10 @@ BOOL CSampleDlg::OnInitDialog()
 	SetIcon(m_hIcon, false);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	
-	//nhPark AppIni initialize
+	//nh UI
+	this->SetWindowPos(NULL, 0, 0, 1000, 800, SWP_NOREPOSITION);
 
+	//nh AppIni initialize
 	CString cstr_AppIniPath;
 	TCHAR l_strBuf[WCHAR_MAX_LENGTH];
 	GetModuleFileName(AfxGetInstanceHandle(), l_strBuf, WCHAR_MAX_LENGTH);
@@ -113,6 +112,10 @@ BOOL CSampleDlg::OnInitDialog()
 	cstr_AppIniPath = cstr_AppIniPath.Left(cstr_AppIniPath.GetLength() - 4); // Remove extension (.exe)
 	cstr_AppIniPath = cstr_AppIniPath + _T(".ini");
 	temp_detector = ssCreateDetector(cstr_AppIniPath);
+	if (temp_detector == nullptr) 
+	{
+		MessageBox(_T("Detector Create Fail"));
+	}
 
 	return true;  // 포커스를 컨트롤에 설정하지 않으면 true를 반환합니다.
 }
@@ -166,24 +169,9 @@ HCURSOR CSampleDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-void CSampleDlg::OnBnClickedCapture()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
-
-void CSampleDlg::OnBnClickedStop()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
-
-
 void CSampleDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
-
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	ssDestroyDetector(temp_detector);
 }

@@ -17,7 +17,7 @@
 //Network Define
 #define SS_TCP			0
 #define SS_UDP			1
-#define SS_Detector		void	*
+#define SS_DetectorHandel		void	*
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,12 +25,14 @@ extern "C" {
 
 #if defined(SS_SDK_EXPORT)
 
-	SS_API SS_Detector _stdcall	ssCreateDetector(CString cstr_AppPath);
+	SS_API SS_DetectorHandel _stdcall	ssCreateDetector(CString csAppPath);
+	SS_API bool _stdcall	ssDestroyDetector(SS_DetectorHandel vdDetectorHandle);
 #else
 	typedef struct {
 		HINSTANCE rHDLL; // the library's handle
 
-		SS_Detector(_stdcall *ssCreateDetector)		(CString cstr_AppPath);
+		SS_DetectorHandel	(_stdcall *ssCreateDetector)		(CString csAppPath);
+		bool				(_stdcall *ssDestroyDetector)		(SS_DetectorHandel csAppPath);
 
 	}tDlib_InterfaceRec;
 	BOOL DLib_MapDLL(const TCHAR *ADllFName, tDlib_InterfaceRec *AIntfRec);

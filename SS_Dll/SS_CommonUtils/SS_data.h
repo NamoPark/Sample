@@ -68,7 +68,6 @@ typedef struct _tDlgParam {
 	TCHAR PathImg[WCHAR_MAX_LENGTH];
 	TCHAR PathIni[WCHAR_MAX_LENGTH];
 	int TrgMode;
-
 	//이하는 SENA INI 내용이다
 	TCHAR Alias[WCHAR_MAX_LENGTH];
 	int CalAlgorithm;
@@ -99,9 +98,25 @@ typedef struct _tDlgParam {
 	BOOL SaveDecompensation;
 } tDlgParam;
 
+enum class DetModel {
+	//DM_Custom = 0,
+	DM_SA130_Solution = 0,
+	DM_SA132_Solution = 1,
+};
+
 typedef struct _SS_data
 {
+	long			m_DetType=0;
+	int				m_DetCount=0;
+	int				m_lastSelected=0;
+	int				m_InputType=0;
 	GIniFile		gAppIni;
-	tDlgParam		DlgParam;
-
+	TCHAR			m_iSingleFilePath[WCHAR_MAX_LENGTH] = { 0, };
+	TCHAR			m_iMultiFilePath[WCHAR_MAX_LENGTH] = { 0, };
+	TCHAR			m_iWildCard[WCHAR_MAX_LENGTH] = { 0, };
+	TCHAR			m_oFolderPath[WCHAR_MAX_LENGTH] = { 0, };
+	CString			m_default_cal_path;
+	CString			m_default_img_path;
+	CString			m_default_ini_path;
+	tDlgParam*		m_ptDlgParam= nullptr;
 }SS_data;

@@ -34,8 +34,6 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedCapture();
-	afx_msg void OnBnClickedStop();
 	afx_msg void OnDestroy();
-	SS_Detector temp_detector;
+	SS_DetectorHandel temp_detector;
 };
