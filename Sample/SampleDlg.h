@@ -6,6 +6,33 @@
 
 #include "../SS_Dll/SS_Interface.h"
 
+template<typename T>
+inline void DELETE_S(T& p)
+{
+	delete p;
+	p = NULL;
+}
+
+template<typename T>
+inline void DELETE_ARR_S(T& p)
+{
+	delete[] p;
+	p = NULL;
+}
+
+#define TAB_SETTING				0
+#define TAB_CALIBRATION			1
+#define TAB_ACQUISITION			2
+
+#define MAIN_DLG_WIDTH			800
+#define MAIN_DLG_HEIGHT			600
+
+#define TAB_DLG_OFFSET_WIDTH	30	
+#define TAB_DLG_OFFSET_HEIGHT	200
+
+class Tab_Acquisition;
+class Tab_Calibration;
+class Tab_Setting;
 // CSampleDlg 대화 상자
 class CSampleDlg : public CDialogEx
 {
@@ -36,4 +63,9 @@ protected:
 public:
 	afx_msg void OnDestroy();
 	SS_DetectorHandel temp_detector;
+	CTabCtrl m_Tab;
+	Tab_Setting* pTab_Setting;
+	Tab_Calibration* pTab_Calibration;
+	Tab_Acquisition* pTab_Acquisition;
+	afx_msg void OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult);
 };

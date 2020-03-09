@@ -7,6 +7,9 @@
 #include "SampleDlg.h"
 #include "afxdialogex.h"
 
+#include "Tab_Acquisition.h"
+#include "Tab_Calibration.h"
+#include "Tab_Setting.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -58,6 +61,7 @@ CSampleDlg::CSampleDlg(CWnd* pParent /*=nullptr*/)
 void CSampleDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TAB1, m_Tab);
 }
 
 BEGIN_MESSAGE_MAP(CSampleDlg, CDialogEx)
@@ -65,6 +69,7 @@ BEGIN_MESSAGE_MAP(CSampleDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DESTROY()
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &CSampleDlg::OnTcnSelchangeTab)
 END_MESSAGE_MAP()
 
 
@@ -102,7 +107,32 @@ BOOL CSampleDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	//nh UI
-	this->SetWindowPos(NULL, 0, 0, 1000, 800, SWP_NOREPOSITION);
+	this->SetWindowPos(NULL, 0, 0, MAIN_DLG_WIDTH, MAIN_DLG_HEIGHT, SWP_NOREPOSITION);
+	m_Tab.SetWindowPos(NULL, 0, 0, MAIN_DLG_WIDTH - TAB_DLG_OFFSET_WIDTH, MAIN_DLG_HEIGHT - TAB_DLG_OFFSET_HEIGHT, SWP_NOREPOSITION);
+	m_Tab.InsertItem(0, _T("Setting"));
+	m_Tab.InsertItem(1, _T("Calibration"));
+	m_Tab.InsertItem(2, _T("Acquisition"));
+	
+	m_Tab.SetCurSel(0);
+
+	CRect rect;
+	int temp_height = 25;
+	m_Tab.GetWindowRect(&rect);
+
+	pTab_Setting = new Tab_Setting;
+	pTab_Setting->Create(IDD_TAB_SETTING,&m_Tab);
+	pTab_Setting->SetWindowPos(NULL, 5, 25, rect.Width()-10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Setting->ShowWindow(SW_SHOW);
+
+	pTab_Calibration = new Tab_Calibration;
+	pTab_Calibration->Create(IDD_TAB_CALIBRATION, &m_Tab);
+	pTab_Calibration->SetWindowPos(NULL, 5, 25, rect.Width() - 10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Calibration->ShowWindow(SW_HIDE);
+
+	pTab_Acquisition = new Tab_Acquisition;
+	pTab_Acquisition->Create(IDD_TAB_ACQUISITION,&m_Tab);
+	pTab_Acquisition->SetWindowPos(NULL, 5, 25, rect.Width() - 10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Acquisition->ShowWindow(SW_HIDE);
 
 	//nh AppIni initialize
 	CString cstr_AppIniPath;
@@ -173,5 +203,35 @@ void CSampleDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	DELETE_S(pTab_Setting);
+	DELETE_S(pTab_Calibration);
+	DELETE_S(pTab_Acquisition);
 	ssDestroyDetector(temp_detector);
+}
+
+
+void CSampleDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int sel = m_Tab.GetCurSel();
+
+	switch (sel) 
+	{
+		case TAB_SETTING:
+			pTab_Setting->ShowWindow(SW_SHOW);
+			pTab_Calibration->ShowWindow(SW_HIDE);
+			pTab_Acquisition->ShowWindow(SW_HIDE);
+			break;
+		case TAB_CALIBRATION:
+			pTab_Setting->ShowWindow(SW_HIDE);
+			pTab_Calibration->ShowWindow(SW_SHOW);
+			pTab_Acquisition->ShowWindow(SW_HIDE);
+			break;
+		case TAB_ACQUISITION:
+			pTab_Setting->ShowWindow(SW_HIDE);
+			pTab_Calibration->ShowWindow(SW_SHOW);
+			pTab_Acquisition->ShowWindow(SW_HIDE);
+			break;
+	}
+	*pResult = 0;
 }
