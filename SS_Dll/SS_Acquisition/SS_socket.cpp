@@ -2,7 +2,8 @@
 
 #include "SS_socket.h"
 #include "SS_socket_exception.h"
-
+#include "../SS_Dll.h"
+#include "../SS_Logger/Logger.h"
 
 #include <iostream>
 
@@ -156,18 +157,18 @@ int ValidateAddressA(string sAddress)
 }
 
 CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
-	: m_hSocket(NULL), m_nPort(nPort), m_bConnected(false), m_sAddress(sAddress)
+	: m_hSocket(NULL), m_nPort(nPort), m_bConnected(false), m_sAddress(sAddress), m_NetProtocol(bNetProtocol)
 {
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) 
 	{
 		throw ESocket(_T("error at socket()"), WSAGetLastError());
 	};
 
-	if (bNetProtocol == SS_TCP)
+	if (m_NetProtocol == SS_TCP)
 	{
 		m_hSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	}
-	else if (bNetProtocol == SS_UDP) 
+	else if (m_NetProtocol == SS_UDP)
 	{
 		m_hSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	}
@@ -178,10 +179,10 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
     }
 
 	unsigned int rcvBuf = SET_SOCK_MAX_BUFF_SIZE;
-	bool state;
+	int state;
 	int len = sizeof(rcvBuf);
 
-	if (bNetProtocol == SS_UDP)
+	if (m_NetProtocol == SS_UDP)
 	{
 		state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
 		if (state == SOCKET_ERROR)
@@ -208,6 +209,43 @@ CSocket::~CSocket()
 	}
 }
 
+
+SOCKET CSocket::GetSocket()
+{
+	return m_hSocket;
+}
+
+void CSocket::Connect(int nTimeout)
+{
+	int ret, err;
+
+	fd_set set;
+	FD_ZERO(&set);
+	timeval tvout = { nTimeout, 0 };  // 2 seconds timeout  
+
+	FD_SET(m_hSocket, &set);
+
+	if (connect(m_hSocket, (SOCKADDR*)&m_Address, sizeof(m_Address)) )
+	{
+		err = WSAGetLastError();
+		if (err != EINPROGRESS && err != EWOULDBLOCK) {
+			SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("connect() failed : %d\n", err));
+			throw ESocket(_T("connect() failed"), WSAGetLastError());
+		}
+		if (select(m_hSocket + 1, NULL, &set, NULL, &tvout) <= 0) {
+			SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("select() failed : %d\n", err));
+			throw ESocket(_T("select() failed"), WSAGetLastError());
+		}
+	}
+	else 
+	{
+		if (m_NetProtocol == SS_UDP) 
+		{
+			char message[30] = "SendStart";
+			send(m_hSocket, message, 30, 0);
+		}
+	}
+}
 
 void CSocket::Close()
 {

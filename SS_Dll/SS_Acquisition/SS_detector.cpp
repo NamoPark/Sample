@@ -25,9 +25,9 @@ int CountDetector(CString cstr_AppPath)
 	}
 	return tDetCount;
 }
-int SaveLoad_AppIni(CString Sect, SS_data* Detector_Data, int Method, int DetCount)
+int SaveLoad_AppIni(CString Sect, SS_Detector* Detector_Data, int Method, int DetCount)
 {
-	SS_data lDetector_Data = *(Detector_Data + DetCount);
+	SS_Detector lDetector_Data = *(Detector_Data + DetCount);
 	lDetector_Data.gAppIni.SetSectName(_T("General"));
 	lDetector_Data.gAppIni.TouchIniInt(_T("LastSelected"), &lDetector_Data.m_lastSelected, Method, 0);
 	lDetector_Data.gAppIni.TouchIniInt(_T("AuxInputType"), &lDetector_Data.m_InputType, Method, 1);
@@ -110,7 +110,7 @@ SS_DetectorHandel _stdcall ssCreateDetector(CString cstr_AppPath)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	// 1. Check, Make App ini File
-	SS_data *tDetectorHandle = new SS_data;
+	SS_Detector *tDetectorHandle = new SS_Detector;
 	if (!(FileExists(CTOW(cstr_AppPath))))	//if not exist
 	{
 		 bool bOk = MakeFile(CTOW(cstr_AppPath));
@@ -194,7 +194,7 @@ SS_DetectorHandel _stdcall ssCreateDetector(CString cstr_AppPath)
 
 bool _stdcall ssDestroyDetector(SS_DetectorHandel vdDetectorHandle)
 {
-	SS_data *tDetectorHandle = (SS_data*) vdDetectorHandle;
+	SS_Detector *tDetectorHandle = (SS_Detector*) vdDetectorHandle;
 
 	if (tDetectorHandle != nullptr)
 	{

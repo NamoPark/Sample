@@ -6,22 +6,68 @@
 #include "Tab_Calibration.h"
 #include "afxdialogex.h"
 
-
-#include "../SS_Dll/SS_Interface.h"
-
-
 // Tab_Calibration 대화 상자
 
 IMPLEMENT_DYNAMIC(Tab_Calibration, CDialogEx)
 
+struct TContextData
+{
+	SS_AcqHandle Handle;
+	FILE *fsFullImage;
+	int FrameWidth;
+	int FrameHeight;
+};
+
+
+void __cdecl FullDataHandler(void *pContextData, void *pData, int nSize)
+{
+	TContextData *pFileData = (TContextData *)pContextData;
+
+	FILE *fs = (FILE *)(pFileData->fsFullImage);
+	int nDataSize = pFileData->FrameWidth * pFileData->FrameHeight * sizeof(short);
+
+	if (fs && nSize == nDataSize)
+	{
+		fwrite(pData, nDataSize, 1, fs);
+		fclose(fs);
+	}
+	else
+	{
+		//CERR << "invalid full-data size." << endl;
+	}
+}
+void __cdecl EventHandler(void *pContextData, int nEventId)
+{
+	TContextData *pData = (TContextData *)pContextData;
+
+	switch (nEventId)
+	{
+
+	default:
+		break;
+	}
+}
+
+void __cdecl ExceptionHandler(void *pContextData, int nExpId)
+{
+	switch (nExpId)
+	{
+
+	default:
+		break;
+	}
+}
+
+
 Tab_Calibration::Tab_Calibration(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_CALIBRATION, pParent)
 {
-
+	AcqHandle = NULL;
 }
 
 Tab_Calibration::~Tab_Calibration()
 {
+	ssDestroyConnection(AcqHandle);
 }
 
 void Tab_Calibration::DoDataExchange(CDataExchange* pDX)
@@ -53,7 +99,27 @@ BOOL Tab_Calibration::OnInitDialog()
 void Tab_Calibration::OnBnClickedGetdark()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	ssCreateConnection(theApp.tDetectorHandle);
+	// 1.CreateConnection
+	AcqHandle = ssCreateConnection(theApp.tDetectorHandle);
+	if (AcqHandle == NULL) 
+	{
+		MessageBox(_T("Connection Fail"));
+	}
+
+	// 2.SetHandler
+	int bOk = false;
+	bOk = ssSetDataHandler(AcqHandle, FullDataHandler);
+	if(!bOk)
+		MessageBox(_T("SetDataHandler Fail"));
+	bOk = ssSetEventHandler(AcqHandle, EventHandler);
+	if (!bOk)
+		MessageBox(_T("SetEventHandler Fail"));
+	bOk = ssSetExceptionHandler(AcqHandle, ExceptionHandler);
+	if (!bOk)
+		MessageBox(_T("SetExceptionHandler Fail"));
+
+	// 3.
+	int bResult = ssCaptureStart(AcqHandle, SS_GetDark);
 }
 
 

@@ -2,7 +2,6 @@
 
 #include "../SS_Interface.h"
 #include "../SS_CommonUtils/SS_StringDefines.h"
-
 #include <string>
 using namespace std;
 
@@ -19,12 +18,16 @@ class CSocket
 	int  m_nPort;
 	struct sockaddr_in m_Address; 
 	int m_bConnected;
+	int m_NetProtocol;
 	//CSocket(const CSocket &o) = delete;
 	//CSocket& operator = (const CSocket &o) = delete;
 public:
 	CSocket(SWstring sAddress, int nPort, bool bNetProtocol);
 	virtual ~CSocket();
 	SWstring &Address() { return m_sAddress; }
+
+	SOCKET GetSocket();
+	void Connect(int nTimeout);
 	void Close();
 };
 

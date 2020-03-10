@@ -104,7 +104,7 @@ enum class DetModel {
 	DM_SA132_Solution = 1,
 };
 
-typedef struct _SS_data
+typedef struct _SS_Detector
 {
 	long			m_DetType=0;
 	int				m_DetCount=0;
@@ -119,4 +119,4 @@ typedef struct _SS_data
 	CString			m_default_img_path;
 	CString			m_default_ini_path;
 	tDlgParam*		m_ptDlgParam= nullptr;
-}SS_data;
+}SS_Detector;

@@ -1,7 +1,10 @@
 ﻿#pragma once
 
-
 // Tab_Calibration 대화 상자
+
+#include "../SS_Dll/SS_Interface.h"
+
+
 
 class Tab_Calibration : public CDialogEx
 {
@@ -21,6 +24,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	SS_AcqHandle AcqHandle;
 	CStatic pCal_View;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedGetdark();
