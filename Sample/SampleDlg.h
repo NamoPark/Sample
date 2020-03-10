@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "../SS_Dll/SS_Interface.h"
 
 template<typename T>
 inline void DELETE_S(T& p)
@@ -28,7 +27,7 @@ inline void DELETE_ARR_S(T& p)
 #define MAIN_DLG_HEIGHT			600
 
 #define TAB_DLG_OFFSET_WIDTH	30	
-#define TAB_DLG_OFFSET_HEIGHT	200
+#define TAB_DLG_OFFSET_HEIGHT	50
 
 class Tab_Acquisition;
 class Tab_Calibration;
@@ -62,7 +61,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnDestroy();
-	SS_DetectorHandel temp_detector;
 	CTabCtrl m_Tab;
 	Tab_Setting* pTab_Setting;
 	Tab_Calibration* pTab_Calibration;

@@ -75,6 +75,9 @@
     <ClCompile Include="SS_CommonUtils\GIniFile.cpp">
       <Filter>CommonUtils</Filter>
     </ClCompile>
+    <ClCompile Include="SS_Acquisition\SS_acquisition_interface.cpp">
+      <Filter>Acquisition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def">
@@ -153,6 +156,9 @@
     </ClInclude>
     <ClInclude Include="SS_CommonUtils\SS_data.h">
       <Filter>CommonUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SS_Acquisition\SS_acquisition_interface.h">
+      <Filter>Acquisition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

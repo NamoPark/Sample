@@ -113,7 +113,6 @@ BOOL CSampleDlg::OnInitDialog()
 	m_Tab.InsertItem(1, _T("Calibration"));
 	m_Tab.InsertItem(2, _T("Acquisition"));
 	
-	m_Tab.SetCurSel(0);
 
 	CRect rect;
 	int temp_height = 25;
@@ -134,19 +133,7 @@ BOOL CSampleDlg::OnInitDialog()
 	pTab_Acquisition->SetWindowPos(NULL, 5, 25, rect.Width() - 10, rect.Height() - 30, SWP_NOREPOSITION);
 	pTab_Acquisition->ShowWindow(SW_HIDE);
 
-	//nh AppIni initialize
-	CString cstr_AppIniPath;
-	TCHAR l_strBuf[WCHAR_MAX_LENGTH];
-	GetModuleFileName(AfxGetInstanceHandle(), l_strBuf, WCHAR_MAX_LENGTH);
-	cstr_AppIniPath = l_strBuf;
-	cstr_AppIniPath = cstr_AppIniPath.Left(cstr_AppIniPath.GetLength() - 4); // Remove extension (.exe)
-	cstr_AppIniPath = cstr_AppIniPath + _T(".ini");
-	temp_detector = ssCreateDetector(cstr_AppIniPath);
-	if (temp_detector == nullptr) 
-	{
-		MessageBox(_T("Detector Create Fail"));
-	}
-
+	m_Tab.SetCurSel(0);
 	return true;  // 포커스를 컨트롤에 설정하지 않으면 true를 반환합니다.
 }
 
@@ -206,7 +193,6 @@ void CSampleDlg::OnDestroy()
 	DELETE_S(pTab_Setting);
 	DELETE_S(pTab_Calibration);
 	DELETE_S(pTab_Acquisition);
-	ssDestroyDetector(temp_detector);
 }
 
 
@@ -229,8 +215,8 @@ void CSampleDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 			break;
 		case TAB_ACQUISITION:
 			pTab_Setting->ShowWindow(SW_HIDE);
-			pTab_Calibration->ShowWindow(SW_SHOW);
-			pTab_Acquisition->ShowWindow(SW_HIDE);
+			pTab_Calibration->ShowWindow(SW_HIDE);
+			pTab_Acquisition->ShowWindow(SW_SHOW);
 			break;
 	}
 	*pResult = 0;

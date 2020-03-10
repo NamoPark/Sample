@@ -180,11 +180,8 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 	unsigned int rcvBuf = SET_SOCK_MAX_BUFF_SIZE;
 	bool state;
 	int len = sizeof(rcvBuf);
-	if (bNetProtocol == SS_TCP)
-	{
-		//state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
-	}
-	else if (bNetProtocol == SS_UDP)
+
+	if (bNetProtocol == SS_UDP)
 	{
 		state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
 	}
@@ -216,7 +213,6 @@ CSocket::~CSocket()
 
 void CSocket::Close()
 {
-	//SD_LOG_SCOPE_0;
 
 	const int nFINTimeout = 2;
 	int nResult = 0;

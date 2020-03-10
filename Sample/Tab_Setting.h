@@ -1,9 +1,10 @@
 ﻿#pragma once
 
 
+#include "../SS_Dll/SS_Interface.h"
 // Tab_Setting 대화 상자
 #define LIST_OFFSET_WIDTH		50
-#define LIST_OFFSET_HEIGHT		110
+#define LIST_OFFSET_HEIGHT		110 
 
 class Tab_Setting : public CDialogEx
 {
@@ -17,12 +18,12 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_TAB_SETTING };
 #endif
-
+private:
+	CListCtrl m_Model_ListCtrl;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CListCtrl m_Model_ListCtrl;
 	virtual BOOL OnInitDialog();
 };

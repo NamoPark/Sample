@@ -15,11 +15,12 @@ IMPLEMENT_DYNAMIC(Tab_Setting, CDialogEx)
 Tab_Setting::Tab_Setting(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_SETTING, pParent)
 {
-
 }
 
 Tab_Setting::~Tab_Setting()
 {
+	//nh ssFunction
+	ssDestroyDetector(theApp.tDetectorHandle);
 }
 
 void Tab_Setting::DoDataExchange(CDataExchange* pDX)
@@ -35,15 +36,26 @@ END_MESSAGE_MAP()
 
 // Tab_Setting 메시지 처리기
 
-
 BOOL Tab_Setting::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_Model_ListCtrl.SetWindowPos(NULL, 0, 20, MAIN_DLG_WIDTH/2, MAIN_DLG_HEIGHT/2, SWP_NOREPOSITION);
-	m_Model_ListCtrl.SetExtendedStyle(LVS_EX_GRIDLINES|LVS_EX_FULLROWSELECT);
+	
+	//nh 추후 수정, 선택 시 AppIni initialize
+	CString cstr_AppIniPath;
+	TCHAR l_strBuf[WCHAR_MAX_LENGTH];
+	GetModuleFileName(AfxGetInstanceHandle(), l_strBuf, WCHAR_MAX_LENGTH);
+	cstr_AppIniPath = l_strBuf;
+	cstr_AppIniPath = cstr_AppIniPath.Left(cstr_AppIniPath.GetLength() - 4); // Remove extension (.exe)
+	cstr_AppIniPath = cstr_AppIniPath + _T(".ini");
 
+	//nh ssFunction
+	theApp.tDetectorHandle = ssCreateDetector(cstr_AppIniPath);
+	if (theApp.tDetectorHandle == nullptr)
+	{
+		MessageBox(_T("Detector Create Fail"));
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

@@ -26,6 +26,7 @@ public:
 
 // 구현입니다.
 
+	SS_DetectorHandel tDetectorHandle;
 	DECLARE_MESSAGE_MAP()
 };
 
