@@ -75,9 +75,6 @@
     <ClCompile Include="SS_CommonUtils\GIniFile.cpp">
       <Filter>CommonUtils</Filter>
     </ClCompile>
-    <ClCompile Include="SS_Acquisition\SS_acquisition_interface.cpp">
-      <Filter>Acquisition</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SS_Dll.def">
@@ -98,9 +95,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="SS_Dll.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SS_Interface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Common\Cmd_List.h">
@@ -157,8 +151,8 @@
     <ClInclude Include="SS_CommonUtils\SS_data.h">
       <Filter>CommonUtils</Filter>
     </ClInclude>
-    <ClInclude Include="SS_Acquisition\SS_acquisition_interface.h">
-      <Filter>Acquisition</Filter>
+    <ClInclude Include="SS_Interface.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

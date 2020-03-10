@@ -18,17 +18,6 @@ using namespace framework::Diagnostics;
 #define ACQIMG  0x03
 #define DARKOFFSET	0x04
 
-
-class SS_Calibration;
-
-// ----- Detector Model -----
-enum class DetModel {
-	//DM_Custom = 0,
-	DM_SA130_Solution = 0,
-	DM_SA132_Solution = 1,
-};
-typedef struct _tDM_List DM_List;
-
 // CSS_DllApp
 // 이 클래스 구현에 대해서는 SS_Dll.cpp를 참조하세요.
 //

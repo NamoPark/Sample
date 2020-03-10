@@ -184,13 +184,11 @@ CSocket::CSocket(SWstring sAddress, int nPort, bool bNetProtocol)
 	if (bNetProtocol == SS_UDP)
 	{
 		state = setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (char*)&rcvBuf, len);
+		if (state == SOCKET_ERROR)
+		{
+			throw ESocket(_T("error at socket()"), WSAGetLastError());
+		}
 	}
-
-	if (state == SOCKET_ERROR)
-	{
-		throw ESocket(_T("error at socket()"), WSAGetLastError());
-	}
-
     m_Address.sin_family = AF_INET;
     m_Address.sin_addr.s_addr = _tinet_addr(sAddress.c_str());
     m_Address.sin_port = htons(nPort);

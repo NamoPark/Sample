@@ -1,9 +1,6 @@
 #pragma once
 
 #include "stdafx.h"
-#include <WinSock2.h>
-#include <Windows.h>
-#include <tchar.h>
 #include "SS_CommonUtils/SS_StringDefines.h"
 
 #define SS_SDK_EXPORT 
