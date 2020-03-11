@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "SampleDlg.h"
 
 // Tab_Acquisition 대화 상자
 
@@ -20,4 +21,11 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+//	afx_msg void OnNcDestroy();
+	virtual void PostNcDestroy();
+	virtual void OnCancel();
+	afx_msg void OnClose();
+	CSampleDlg* pParent;
+	virtual BOOL OnInitDialog();
 };

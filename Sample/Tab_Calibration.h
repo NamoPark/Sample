@@ -3,9 +3,10 @@
 // Tab_Calibration 대화 상자
 
 #include "../SS_Dll/SS_Interface.h"
+#include "SampleDlg.h"
 
-
-
+#define WIDTH_OFFSET	5
+#define HEIGHTOFFSET	5
 class Tab_Calibration : public CDialogEx
 {
 	DECLARE_DYNAMIC(Tab_Calibration)
@@ -25,8 +26,22 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	SS_AcqHandle AcqHandle;
-	CStatic pCal_View;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedGetdark();
 	afx_msg void OnBnClickedGetbright();
+	int InitTabDlg();
+private:
+	CRect TabDlgRect;
+	CRect TabViwerRect;
+	CPoint ViewerStartPoint;
+	CSize ViewerSize;
+
+	CStatic pCal_View;
+public:
+	CButton btn_GetDark;
+	CButton btn_GetBright;
+	virtual void PostNcDestroy();
+	virtual void OnCancel();
+	afx_msg void OnClose();
+	CSampleDlg* pParent;
 };

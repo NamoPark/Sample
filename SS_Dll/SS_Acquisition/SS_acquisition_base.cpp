@@ -153,50 +153,6 @@ static UINT WINAPI CtlReadThread(void *AParam)
 static UINT WINAPI DataListenThread(void *AParam)
 {
 	SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("DataListenThread Generation Success"));
-
-	CSocket* ixData_Soc = (CSocket*)AParam;
-	//(theApp.ssFrameSave)->setup(tpDlgParam->ImgDim.rFrameHeight, tpDlgParam->ImgDim.rFrameWidth, sizeof(UINT16), tpDlgParam->PathCal);
-	BYTE qBuf[UDP_MAX_PSIZE];
-	//BYTE *FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
-	//BYTE *FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-	unsigned short RecvImageCount = 0;
-	unsigned short RecvPacketCount = 0;
-
-	while (!VaU3_MutexLocked(cMutexID))
-	{
-		int qL = 0;
-		qL = recv(ixData_Soc->GetSocket(), (char*)qBuf, UDP_MAX_PSIZE, 0);
-		if (!(qL == SOCKET_ERROR))
-		{
-
-			unsigned short SendPacketCount = *((unsigned short*)(qBuf + 2));
-			if (RecvPacketCount != SendPacketCount)
-			{
-				unsigned short SendImageCount = *((unsigned short*)(qBuf));
-				if (RecvImageCount != SendImageCount)
-				{
-					SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error\nRecvPacketCount : %d , SendPacketCount : %d , RecvImageCount : %d ,SendImageCount : %d "), RecvPacketCount, SendPacketCount, RecvImageCount, SendImageCount);
-					//FrameBufferCurr = (theApp.ssFrameSave)->getReturnFrame();
-					RecvPacketCount = 0;
-					RecvImageCount = SendImageCount;
-				}
-				FrameBufferCurr += (UDP_MAX_PSIZE*(SendPacketCount - RecvPacketCount));
-				SS_LOG((*theApp.pSSLogger), LogLevel::Info, _T("Packet Cross Error 22 \nRecvPacketCount : %d , SendPacketCount : %d , FrameBufferCurr : %x ,FrameBufferMax : %x "), RecvPacketCount, SendPacketCount, FrameBufferCurr, FrameBufferMax);
-				RecvPacketCount = SendPacketCount;
-			}
-			memcpy(FrameBufferCurr, qBuf, qL);
-			FrameBufferCurr += qL;
-			RecvPacketCount++;
-		}
-		if (FrameBufferCurr == FrameBufferMax)
-		{
-			(theApp.ssFrameSave)->addFrame();
-			FrameBufferCurr = (theApp.ssFrameSave)->getFrame();
-			FrameBufferMax = FrameBufferCurr + NP * sizeof(unsigned short);
-			RecvPacketCount = 0;
-			RecvImageCount++;
-		}
-	}
 	return 0;
 }
 

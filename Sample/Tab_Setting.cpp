@@ -31,6 +31,7 @@ void Tab_Setting::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(Tab_Setting, CDialogEx)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -43,6 +44,9 @@ BOOL Tab_Setting::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	
 	//nh 추후 수정, 선택 시 AppIni initialize
+
+	pParent = (CSampleDlg *)AfxGetMainWnd();
+
 	CString cstr_AppIniPath;
 	TCHAR l_strBuf[WCHAR_MAX_LENGTH];
 	GetModuleFileName(AfxGetInstanceHandle(), l_strBuf, WCHAR_MAX_LENGTH);
@@ -59,4 +63,29 @@ BOOL Tab_Setting::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+
+void Tab_Setting::PostNcDestroy()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	pParent->pTab_Calibration = NULL;
+	delete this;
+	CDialogEx::PostNcDestroy();
+}
+
+
+void Tab_Setting::OnCancel()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CDialogEx::OnCancel();
+}
+
+
+void Tab_Setting::OnClose()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CDialogEx::OnClose();
 }

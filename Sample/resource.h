@@ -17,6 +17,13 @@
 #define IDC_CAL_VIEW                    1003
 #define IDC_GETDARK                     1004
 #define IDC_GETBRIGHT                   1005
+#define IDC_LOG_SUB                     1006
+#define IDC_LOG_EDIT                    1007
+#define IDC_CONNECTION_SUB              1008
+#define IDC_COMMON_SUB                  1009
+#define IDC_BTN_COMMON_SETTING          1010
+#define IDC_BUTTON_DLG_SAVE             1011
+#define IDC_SAVE_EXIT                   1013
 
 // Next default values for new objects
 // 
@@ -24,7 +31,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

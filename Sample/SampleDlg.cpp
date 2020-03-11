@@ -62,6 +62,13 @@ void CSampleDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TAB1, m_Tab);
+	DDX_Control(pDX, IDC_LOG_SUB, m_nLogSub);
+	DDX_Control(pDX, IDC_LOG_EDIT, m_nLogEdit);
+	DDX_Control(pDX, IDC_CONNECTION_SUB, m_nConnectionSub);
+	DDX_Control(pDX, IDC_COMMON_SUB, m_nCommonSub);
+	DDX_Control(pDX, IDC_BTN_COMMON_SETTING, m_bCommonSetting);
+	DDX_Control(pDX, IDC_BUTTON_DLG_SAVE, m_bSAVE);
+	DDX_Control(pDX, IDC_SAVE_EXIT, m_bSaveExit);
 }
 
 BEGIN_MESSAGE_MAP(CSampleDlg, CDialogEx)
@@ -70,6 +77,10 @@ BEGIN_MESSAGE_MAP(CSampleDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DESTROY()
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &CSampleDlg::OnTcnSelchangeTab)
+	ON_BN_CLICKED(IDC_BTN_COMMON_SETTING, &CSampleDlg::OnBnClickedBtnCommonSetting)
+	ON_BN_CLICKED(IDC_BUTTON_DLG_SAVE, &CSampleDlg::OnBnClickedButtonDlgSave)
+	ON_BN_CLICKED(IDC_SAVE_EXIT, &CSampleDlg::OnBnClickedButtonDlgSaveExit)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -107,33 +118,42 @@ BOOL CSampleDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	//nh UI
-	this->SetWindowPos(NULL, 0, 0, MAIN_DLG_WIDTH, MAIN_DLG_HEIGHT, SWP_NOREPOSITION);
-	m_Tab.SetWindowPos(NULL, 0, 0, MAIN_DLG_WIDTH - TAB_DLG_OFFSET_WIDTH, MAIN_DLG_HEIGHT - TAB_DLG_OFFSET_HEIGHT, SWP_NOREPOSITION);
+	CRect tRect;
+	this->MoveWindow(0, 0, MAIN_DLG_WIDTH, MAIN_DLG_HEIGHT);
+	this->GetWindowRect(&tRect);
+	m_Tab.MoveWindow(0, 0, TAB_DLG_WIDTH, TAB_DLG_HEIGHT);
+	m_Tab.GetWindowRect(&tRect);
+
 	m_Tab.InsertItem(0, _T("Setting"));
 	m_Tab.InsertItem(1, _T("Calibration"));
 	m_Tab.InsertItem(2, _T("Acquisition"));
-	
-
-	CRect rect;
-	int temp_height = 25;
-	m_Tab.GetWindowRect(&rect);
 
 	pTab_Setting = new Tab_Setting;
 	pTab_Setting->Create(IDD_TAB_SETTING,&m_Tab);
-	pTab_Setting->SetWindowPos(NULL, 5, 25, rect.Width()-10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Setting->MoveWindow(TAB_OFFSET_WIDTH, 25, TAB_ATTACH_DLG_WIDTH, TAB_ATTACH_DLG_HEIGHT);
 	pTab_Setting->ShowWindow(SW_SHOW);
 
 	pTab_Calibration = new Tab_Calibration;
 	pTab_Calibration->Create(IDD_TAB_CALIBRATION, &m_Tab);
-	pTab_Calibration->SetWindowPos(NULL, 5, 25, rect.Width() - 10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Calibration->MoveWindow(TAB_OFFSET_WIDTH, 25, TAB_ATTACH_DLG_WIDTH, TAB_ATTACH_DLG_HEIGHT);
+	pTab_Calibration->InitTabDlg();
 	pTab_Calibration->ShowWindow(SW_HIDE);
 
 	pTab_Acquisition = new Tab_Acquisition;
 	pTab_Acquisition->Create(IDD_TAB_ACQUISITION,&m_Tab);
-	pTab_Acquisition->SetWindowPos(NULL, 5, 25, rect.Width() - 10, rect.Height() - 30, SWP_NOREPOSITION);
+	pTab_Acquisition->MoveWindow(TAB_OFFSET_WIDTH, 25, TAB_ATTACH_DLG_WIDTH, TAB_ATTACH_DLG_HEIGHT);
 	pTab_Acquisition->ShowWindow(SW_HIDE);
 
-	m_Tab.SetCurSel(0);
+	pTab_Acquisition->GetWindowRect(&tRect);
+
+	m_nLogSub.MoveWindow(0, TAB_DLG_HEIGHT, LOG_SUB_WIDTH, LOG_SUB_HEIGHT);
+	m_nLogSub.GetWindowRect(&tRect);
+	m_nLogEdit.MoveWindow(5, TAB_DLG_HEIGHT+15, LOG_SUB_WIDTH-10, LOG_SUB_HEIGHT-20);
+	m_nConnectionSub.MoveWindow(LOG_SUB_WIDTH, TAB_DLG_HEIGHT, CONNECTION_WIDTH-5, CONNECTION_HEIGHT);
+	m_nCommonSub.MoveWindow(LOG_SUB_WIDTH, TAB_DLG_HEIGHT+ CONNECTION_HEIGHT, CONNECTION_WIDTH - 5, CONNECTION_HEIGHT);
+	m_bCommonSetting.MoveWindow(LOG_SUB_WIDTH+10, TAB_DLG_HEIGHT + CONNECTION_HEIGHT+25, 100, 60);
+	m_bSAVE.MoveWindow(LOG_SUB_WIDTH + 10+ 100 +10 , TAB_DLG_HEIGHT + CONNECTION_HEIGHT + 25, 100, 25);
+	m_bSaveExit.MoveWindow(LOG_SUB_WIDTH + 10 + 100 + 10, TAB_DLG_HEIGHT + CONNECTION_HEIGHT + 25+35, 100, 25);
 	return true;  // 포커스를 컨트롤에 설정하지 않으면 true를 반환합니다.
 }
 
@@ -186,16 +206,6 @@ HCURSOR CSampleDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CSampleDlg::OnDestroy()
-{
-	CDialogEx::OnDestroy();
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	DELETE_S(pTab_Setting);
-	DELETE_S(pTab_Calibration);
-	DELETE_S(pTab_Acquisition);
-}
-
-
 void CSampleDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -220,4 +230,36 @@ void CSampleDlg::OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 			break;
 	}
 	*pResult = 0;
+}
+
+void CSampleDlg::OnBnClickedBtnCommonSetting()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CSampleDlg::OnBnClickedButtonDlgSave()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CSampleDlg::OnBnClickedButtonDlgSaveExit()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	PostMessage(WM_QUIT);
+}
+
+
+void CSampleDlg::OnClose()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CDialogEx::OnClose();
+}
+
+void CSampleDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

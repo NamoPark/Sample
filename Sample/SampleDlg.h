@@ -8,26 +8,50 @@
 template<typename T>
 inline void DELETE_S(T& p)
 {
-	delete p;
-	p = NULL;
+	if (p != NULL) {
+		delete p;
+		p = NULL;
+	}
 }
 
 template<typename T>
 inline void DELETE_ARR_S(T& p)
 {
-	delete[] p;
-	p = NULL;
+	if (p != NULL) {
+		delete[] p;
+		p = NULL;
+	}
 }
 
 #define TAB_SETTING				0
 #define TAB_CALIBRATION			1
 #define TAB_ACQUISITION			2
 
-#define MAIN_DLG_WIDTH			800
-#define MAIN_DLG_HEIGHT			600
+//
+#define INIT_OFFSET_WIDTH				8
+#define INIT_OFFSET_HEIGHT				240
 
-#define TAB_DLG_OFFSET_WIDTH	30	
-#define TAB_DLG_OFFSET_HEIGHT	50
+#define MAIN_DLG_WIDTH					800
+#define MAIN_DLG_HEIGHT					700
+
+#define TAB_DLG_WIDTH					(MAIN_DLG_WIDTH - (INIT_OFFSET_WIDTH *2))
+#define TAB_DLG_HEIGHT					(MAIN_DLG_HEIGHT - INIT_OFFSET_HEIGHT)
+
+#define TAB_OFFSET_WIDTH				5
+#define TAB_OFFSET_HEIGHT				30
+
+#define TAB_ATTACH_DLG_WIDTH			TAB_DLG_WIDTH - TAB_OFFSET_WIDTH*2
+#define TAB_ATTACH_DLG_HEIGHT			TAB_DLG_HEIGHT - TAB_OFFSET_HEIGHT
+
+#define LOG_SUB_OFFSET_HEIGHT			10
+#define LOG_SUB_WIDTH					TAB_DLG_WIDTH*0.7
+#define LOG_SUB_HEIGHT					MAIN_DLG_HEIGHT - TAB_ATTACH_DLG_HEIGHT- LOG_SUB_OFFSET_HEIGHT
+#define LOG_EDIT_OFFSET_WIDTH			5
+#define LOG_EDIT_OFFSET_HEIGHT			10
+
+#define CONNECTION_WIDTH				(TAB_DLG_WIDTH)*0.3
+#define CONNECTION_HEIGHT				(LOG_SUB_HEIGHT)/2
+
 
 class Tab_Acquisition;
 class Tab_Calibration;
@@ -61,9 +85,24 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnDestroy();
+
 	CTabCtrl m_Tab;
-	Tab_Setting* pTab_Setting;
-	Tab_Calibration* pTab_Calibration;
-	Tab_Acquisition* pTab_Acquisition;
+	Tab_Setting* pTab_Setting = NULL;
+	Tab_Calibration* pTab_Calibration = NULL;
+	Tab_Acquisition* pTab_Acquisition = NULL;
+
+	CStatic m_nConnectionSub;
+	CStatic m_nCommonSub;
+	CStatic m_nLogSub;
+	CButton m_bCommonSetting;
+	CButton m_bSAVE;
+	CButton m_bSaveExit;
+	CEdit m_nLogEdit;
+
 	afx_msg void OnTcnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult);
+
+	afx_msg void OnBnClickedBtnCommonSetting();
+	afx_msg void OnBnClickedButtonDlgSave();
+	afx_msg void OnBnClickedButtonDlgSaveExit();
+	afx_msg void OnClose();
 };

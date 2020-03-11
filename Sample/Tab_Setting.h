@@ -2,6 +2,7 @@
 
 
 #include "../SS_Dll/SS_Interface.h"
+#include "SampleDlg.h"
 // Tab_Setting 대화 상자
 #define LIST_OFFSET_WIDTH		50
 #define LIST_OFFSET_HEIGHT		110 
@@ -26,4 +27,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
+	virtual void PostNcDestroy();
+	virtual void OnCancel();
+	afx_msg void OnClose();
+	CSampleDlg* pParent;
 };
